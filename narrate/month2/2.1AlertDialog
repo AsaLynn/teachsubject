@@ -1,0 +1,179 @@
+AlertDialog的使用详解:
+    1,分类:
+        AlertDialog 普通对话框,
+        TimePickerDialog 时间选择对话框,AlertDialog的子类
+        DatePickerDialog 日期选择对话框,AlertDialog的子类
+        ProgressDialog 进度对话框,AlertDialog的子类
+    2,AlertDialog.Builder
+        通常使用该内部类来创建和设置对话框的各个属性.
+
+        核心方法介绍:
+            构造方法
+            Builder(Context context)
+            Builder(Context context, int themeResId)
+
+            创建
+            AlertDialog create()
+
+            设置触摸屏幕敏感,true:触屏弹框消失.false:反之
+            Builder setCancelable(boolean cancelable)
+
+            设置标题图标
+            Builder setIcon(Drawable icon)
+            Builder setIcon(@DrawableRes int iconId)
+
+            设置列表对话框条目
+            Builder setItems(CharSequence[] items, final OnClickListener listener)
+            Builder setItems(@ArrayRes int itemsId, final OnClickListener listener)
+
+            设置弹框内容消息描述
+            Builder setMessage(CharSequence message)
+            Builder setMessage(@StringRes int messageId)
+
+            设置多选对话框:
+            参数1:条目列表,列表选中状态,选项监听
+            Builder setMultiChoiceItems(CharSequence[] items, boolean[] checkedItems,
+                            final OnMultiChoiceClickListener listener)
+            Builder setMultiChoiceItems(Cursor cursor, String isCheckedColumn, String labelColumn,
+                                            final OnMultiChoiceClickListener listener)
+            Builder setMultiChoiceItems(@ArrayRes int itemsId, boolean[] checkedItems,
+                                                            final OnMultiChoiceClickListener listener)
+
+            设置取消按钮,以及点击监听
+            Builder setNegativeButton(CharSequence text, final OnClickListener listener)
+            Builder setNegativeButton(@StringRes int textId, final OnClickListener listener)
+            Builder setNeutralButton(CharSequence text, final OnClickListener listener)
+            Builder setNeutralButton(@StringRes int textId, final OnClickListener listener)
+
+            设置取消监听
+            Builder setOnCancelListener(OnCancelListener onCancelListener)
+            设置弹框消失监听
+            Builder setOnDismissListener(OnDismissListener onDismissListener)
+            设置条目选择监听
+            Builder setOnItemSelectedListener(final AdapterView.OnItemSelectedListener listener)
+
+            设置确认对话框以及监听.
+            Builder setPositiveButton(CharSequence text, final OnClickListener listener)
+            Builder setPositiveButton(@StringRes int textId, final OnClickListener listener)
+
+            设置单选弹框
+            Builder setSingleChoiceItems(CharSequence[] items, int checkedItem, final OnClickListener listener)
+            Builder setSingleChoiceItems(Cursor cursor, int checkedItem, String labelColumn,
+                            final OnClickListener listener)
+            Builder setSingleChoiceItems(@ArrayRes int itemsId, int checkedItem,
+                            final OnClickListener listener)
+            Builder setSingleChoiceItems(ListAdapter adapter, int checkedItem, final OnClickListener listener)
+
+            设置标题
+            Builder setTitle(CharSequence title)
+            Builder setTitle(@StringRes int titleId)
+
+            设置自定义布局
+            Builder setView(View view)
+            Builder setView(int layoutResId)
+
+            弹框
+            AlertDialog show()
+
+    3,  AlertDialog
+        普通对话框,基类
+
+        构造
+        AlertDialog(Context context)
+
+        设置图标
+        setIcon
+        设置消息内容
+        setMessage
+        设置标题
+        setTitle
+        设置自定义布局
+        setView
+        弹出
+        AlertDialog show()
+
+        设置在点击Dialog外是否取消Dialog进度条
+        setCanceledOnTouchOutside(boolean cancel)
+
+    4,  TimePickerDialog
+        时间选择对话框
+
+        构造方法
+        TimePickerDialog(Context context, int themeResId, OnTimeSetListener listener,
+                    int hourOfDay, int minute, boolean is24HourView)
+        TimePickerDialog(Context context, OnTimeSetListener listener, int hourOfDay, int minute,
+                    boolean is24HourView)
+
+    5,  DatePickerDialog
+        日期选择对话框
+
+        构造方法
+        DatePickerDialog(@NonNull Context context)
+        DatePickerDialog(@NonNull Context context, @StyleRes int themeResId)
+
+    6,  ProgressDialog
+        进度对话框,ProgressDialog 继承自AlertDialog，AlertDialog继承自Dialog,实现DialogInterface接口。
+        ProgressDialog的样式有两种，一种是圆形不明确状态，一种是水平进度条状态
+        更新进度条的进度,可以在子线程中更新进度条进度
+
+        构造
+        ProgressDialog(Context context)
+        ProgressDialog(Context context, int theme)
+
+        进度最大值
+        int getMax()
+        进度
+        int getProgress()
+        int getSecondaryProgress()
+
+        设置初始化已经增长的进度
+        incrementProgressBy(int diff)
+        第二进度设置初始化已经增长的进度
+        incrementSecondaryProgressBy(int diff)
+
+        是否为进度值明确的.
+        boolean isIndeterminate()
+
+        设置进度最大值是否明确
+        setIndeterminate(boolean indeterminate)
+
+        设置背景图
+        setIndeterminateDrawable(Drawable d)
+
+        设置进度最大值
+        setMax(int max)
+
+        设置进度
+        setProgress(int value)
+
+        设置进度UI
+        setProgressDrawable(Drawable d)
+
+        进度格式化
+        setProgressNumberFormat(String format)
+        setProgressPercentFormat(NumberFormat format)
+
+        进度样式
+        ProgressDialog.STYLE_SPINNER,圆形
+        ProgressDialog.STYLE_HORIZONTAL,长条
+        setProgressStyle(int style)
+
+        设置第二进度
+        setSecondaryProgress(int secondaryProgress)
+
+        弹框展示
+        参数1:context,参数2:标题, 参数3:提示消息
+        ProgressDialog show(Context context, CharSequence title,
+                    CharSequence message)
+        参数1:context,参数2:标题, 参数3:提示消息,, 参数4:是否不明确的状态
+        static ProgressDialog show(Context context, CharSequence title,
+                    CharSequence message, boolean indeterminate)
+
+        参数1:context,参数2:标题, 参数3:提示消息,参数4:是否不明确的状态,参数5:进度条是可以取消
+        static ProgressDialog show(Context context, CharSequence title,
+                    CharSequence message, boolean indeterminate, boolean cancelable)
+
+        参数1:context,参数2:标题, 参数3:提示消息,参数4:是否不明确的状态,参数5:进度条是可以取消,参数6:用于监听进度条被取消
+        static ProgressDialog show(Context context, CharSequence title,
+                    CharSequence message, boolean indeterminate,
+                    boolean cancelable, OnCancelListener cancelListener)

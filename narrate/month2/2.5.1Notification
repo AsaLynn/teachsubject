@@ -1,0 +1,283 @@
+Notitfcation通知的使用详解
+1,概述Notification
+	Notification,通知; 通知单; 布告; 公布;是一种让你的应用程序在不使用Activity的情况下,来警示用户的功能。
+	它是看不见的程序组件(例如Broadcast Receiver，Service等),警示用户有需要注意的事件发生的最好途径.
+	Notification 是由NotificationManager(系统服务)统一管理的.
+
+	1.1通常一个Notification应该传送的消息包括:
+	一个状态条图标 
+	一个启动Intent(打开某界面或者某个应用等等) 
+	LED灯光闪烁
+	电话震动
+	状态栏中显示信息内容
+
+	1.2所需要的权限配置:
+	<uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+
+	1.3通知(Notification)的显示类型有两种:
+    	使用默认的形式
+    	使用自定义的View(RemoteViews对象)显示
+
+	1.3Notification的介绍:
+	构造方法:
+		Notification()
+		Notification(Context context, int icon, CharSequence tickerText, long when,CharSequence contentTitle, CharSequence contentText, Intent contentIntent)
+		Notification(Parcel parcel)
+
+		其他方法:
+		static void addFieldsFromContext(ApplicationInfo ai, int userId,
+            Notification notification)
+        static void addFieldsFromContext(Context context, Notification notification)
+        Notification clone()
+        cloneInto(Notification that, boolean heavy)
+        int describeContents()
+        String getGroup()
+        Icon getLargeIcon()
+        static Notification[] getNotificationArrayFromBundle(Bundle bundle, String key)
+        Icon getSmallIcon()
+        String getSortKey()
+        boolean hasLargeIcon()
+        boolean isGroupChild()
+        boolean isGroupSummary()
+        lightenPayload()
+        static String priorityToString
+        static CharSequence safeCharSequence(CharSequence cs)
+        setSmallIcon(Icon icon)
+        boolean showsChronometer()
+        boolean showsTime()
+        writeToParcel(Parcel parcel, int flags)
+
+	Notification触发执行的效果
+		DEFAULT_ALL          	所有效果默认默认的声音 震动 呼吸灯
+        DEFAULT_LIGHTS       	闪光,呼吸灯
+        DEFAULT_SOUND      		声音
+        DEFAULT_VIRATE       	震动，
+        (后来得知需要添加震动权限VIBRATE： android.permission.VIBRATE)
+
+    设置Flag位
+    FLAG_AUTO_CANCEL        该通知能被状态栏的清除按钮给清除掉
+    FLAG_NO_CLEAR           该通知不能被状态栏的清除按钮给清除掉
+    FLAG_ONGOING_EVENT      通知放置在正在运行
+
+    常用字段 
+    contentView                  
+    通知在状态栏的显示View(自定义，具体请看下文) ，常与contentIntent配合使用，点击该通知后，
+    即触发contentIntent
+
+    contentIntent                 
+    设置PendingIntent对象，点击该通知时发送该Intent
+
+    flags                                  
+    设置flag位，例如FLAG_NO_CLEAR等
+
+    defaults                             
+    添加效果
+
+    tickerText                        
+    显示在状态栏中的文字
+
+    when                               
+    发送此通知的时间戳
+
+    icon                                  
+    设置图标
+
+    
+                            
+
+2,Notitfcation.Builder
+	构造方法:
+	Builder(Context context)
+	Builder(Context context, Notification toAdopt)
+
+	Builder addAction(Action action)
+	Builder addExtras(Bundle extras)
+	Builder addPerson(String uri)
+
+	获取Notification对象实例
+	Notification build()
+
+	Notification buildInto(Notification n)
+	Notification buildUnstyled()
+	RemoteViews createBigContentView()
+	RemoteViews createContentView()
+	RemoteViews createHeadsUpContentView()
+	Builder extend(Extender extender)
+	Bundle getExtras()
+	static Notification.Builder recoverBuilder(Context context, Notification n)
+	Builder setActions(Action... actions)
+
+	设置是否可以点击通知来删除该通知,参数true:点击通知后,删除通知.false:反之
+	Builder setAutoCancel(boolean autoCancel)
+	
+	Builder setCategory(String category)
+	Builder setChronometerCountDown(boolean countDown)
+	Builder setColor(int argb)
+	
+	点击通知消息后的意图,行为,事件
+	Builder setContentIntent(PendingIntent intent)
+
+	设置通知的消息内容的描述部分位于标题部分下方,下拉状态栏后的顶部的长方形横条上可看到
+	Builder setContentText(CharSequence text)
+
+	设置通知的消息内容的标题部分,位于下拉状态栏后的顶部的长方形横条上
+	Builder setContentTitle(CharSequence title)
+
+	在通知的右侧 时间的下面 用来展示一些其他信息
+	Builder setContentInfo(CharSequence info)
+	Builder setCustomBigContentView(RemoteViews contentView)
+	Builder setCustomContentView(RemoteViews contentView)
+	Builder setCustomHeadsUpContentView(RemoteViews contentView)
+
+	设置发通知时,伴随的状态变化,如铃声,震动等等(默认的声音 震动 呼吸灯 )
+	Builder setDefaults(int defaults)
+	Builder setDeleteIntent(PendingIntent intent) 
+	Builder setExtras(Bundle extras)
+	Builder setFlag(int mask, boolean value)
+
+	调用此方法可以设置通知在其他的应用之上,而不是在状态栏上下拉看到的通知了.类似于QQ的聊天收到消息的功能,真的很讨厌!
+	Builder setFullScreenIntent(PendingIntent intent, boolean highPriority)
+	Builder setGroup(String groupKey)
+	Builder setGroupSummary(boolean isGroupSummary)
+
+	设置大图标,下列状态栏后的消息内容上面,sdk版本不同显示位置可能会有差异
+	Builder setLargeIcon(Bitmap b)
+	Builder setLargeIcon(Icon icon)
+
+	设置呼吸灯的颜色 并不是所有颜色都被支持 
+	Builder setLights(@ColorInt int argb, int onMs, int offMs)
+	Builder setLocalOnly(boolean localOnly)
+
+	设置是否进制滑动删除通知,true:进制滑动删除.false:反之
+	Builder setOngoing(boolean ongoing)
+	Builder setOnlyAlertOnce(boolean onlyAlertOnce)
+	Builder setPriority(@Priority int pri)
+
+	设置progressbar显示,参数1:进度最大值.参数2:当前进度.参数3:进度是否是明确的状态(是否使用不确定模式 ),true:不明确.false:反之
+	Builder setProgress(int max, int progress, boolean indeterminate)
+	Builder setPublicVersion(Notification n)
+	Builder setRemoteInputHistory(CharSequence[] text)
+
+	设置是否显示时间
+	Builder setShowWhen(boolean show)
+
+	设置发送消息通知时的小图标,位于状态栏的顶部!
+	Builder setSmallIcon(Icon icon)
+	Builder setSmallIcon(@DrawableRes int icon)
+	Builder setSmallIcon(@DrawableRes int icon, int level)
+
+	Builder setSortKey(String sortKey)
+
+	设置通知的效果声音
+	Builder setSound(Uri sound)
+	Builder setSound(Uri sound, AudioAttributes audioAttributes)
+
+	设置通知的样式:参数可以传递:BigTextStyle,BigPictureStyle,InboxStyle,MediaStyle,MessagingStyle,DecoratedCustomViewStyle等等
+	Builder setStyle(Style style)
+
+	设置消息的内容内容摘要部分,位于消息内容文字描述的下面
+	Builder setSubText(CharSequence text)
+
+	设置发通知时的内容,即屏幕顶部状态栏的文字消息内容,只显示一瞬间后消失,类似于Toast!
+	Builder setTicker(CharSequence tickerText)
+
+	设置通知的消息中不显示时间,显示正计时.
+	Builder setUsesChronometer(boolean b)
+
+	设置震动模式,参数是个long[]｛震动时长，间隔时长，震动时长，间隔时长…｝单位毫秒
+	Builder setVibrate(long[] pattern)
+
+	设置显示状态
+	Builder setVisibility(int visibility)
+	
+	设置通知事件发生的时间.
+	Builder setWhen(long when) 
+
+	number设计用来显示同种通知的数量和ContentInfo的位置一样，如果设置了ContentInfo则number会被隐藏
+	Builder setNumber(int number)
+	
+
+3,Notification 回调
+4,自定义Notification
+5,NotificationManager
+	通过获取系统服务来获取该对象
+	NotificationManager mNotificationManager = (NotificationManager)getSystemServic(Context.NOTIFICATION_SERVICE) ;
+
+	移除所有通知(只是针对当前Context下的Notification)
+    cancelAll()
+    移除标记为id的通知 (只是针对当前Context下的所有Notification)                  
+    cancel(int id)              
+	将通知加入状态栏, 标签为tag，标记为id
+    notify(String tag ,int id, Notification notification)              
+	将通知加入状态栏,，标记为id
+    notify(int id, Notification notification)
+6,不同sdk版本使用的差异
+	sdk版本大于等于16:
+		1,Notification的setLatestEventInfo方法被删除了
+		2,使用Notification.Builder来设置各个属性以及创建Notification实例
+		3,Notification.Build 中的build()方法可用
+	sdk版本小于16:
+	5.0 及以上版本的 Notification 样式发生了改变
+	build内提供了很多设置，但是在不同的系统版本显示有很多差异，使用时需要注意
+	boolean isAboveLollipop = Build.VERSION.SDK_INT 
+	>= Build.VERSION_CODES.LOLLIPOP; 
+	setContentInfo和setNumber同时使用 number会被隐藏
+	setSubText显示在通知栏的第三行文本，在低版本上不显示，比如4.0系统 
+	setVibrate设置震动 参数是个long[]｛震动时长，间隔时长，震动时长，间隔时长…｝单位毫秒
+7,执行一个Notification通知的步骤:
+	1.创建NotificationManager
+	2.创建Notification
+	3.调用NotificationManager的方法notify()产生通知展示到状态栏中
+8,NotificationCompat和NotificationCompat.Builder
+	位于support.v4.app包下
+	通过这个类来创建通知,可以兼容sdk4.4以下的版本!
+	其方法使用和Notitfcation.Builder相同!
+9,Notification的常用几种样式
+	9.1NotificationCompat.BigTextStyle
+		点击后展开可显示大段文字内容的通知
+		注意事项 
+		1. 使用类 android.support.v4.app.NotificationCompat.BigTextStyle 
+		2. 在低版本系统上只显示点击前的普通通知样式 如4.4可以点击展开，在4.0系统上就不行 
+		3. 点击前后的ContentTitle、ContentText可以不一致，bigText内容可以自动换行 好像最多5行的样子
+	9.2NotificationCompat.InboxStyle
+		与bigTextStyle类似，点击前显示普通通知样式，点击后展开
+		注意事项 
+		1. 使用类android.support.v4.app.NotificationCompat.InboxStyle 
+		2. 每行内容过长时并不会自动换行 
+		3. addline可以添加多行 但是多余5行的时候每行高度会有截断 
+		4. 同BigTextStyle 低版本上系统只能显示普通样式
+	9.3NotificationCompat.BigPictureStyle
+		点击后可以显示一个大图的通知
+		注意事项 
+		1. 使用类android.support.v4.app.NotificationCompat.BigPictureStyle 
+		2. style.bigPicture传递的是个bitmap对象 所以也不应该传过大的图 否则会oom 
+		3. 同BigTextStyle 低版本上系统只能显示普通样式
+	9.4hangup横幅通知
+		类似于手机QQ消息的通知，不显示在通知栏而是以横幅的模式显示在其他应用上方
+		注意事项 
+		1. 此种效果只在5.0以上系统中有效 
+		2. mainfest中需要添加<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> 
+		3. 可能还需要在设置开启横幅通知权限（在设置通知管理中） 
+		4. 在部分改版rom上可能会直接弹出应用而不是显示横幅
+	9.5NotificationCompat.MediaStyle
+		主要是用来关联音频播放服务的，点击后不会自动消失,通知栏的清空也不可用
+		在4.0系统上的效果 不能展开但是可以最多显示3个按钮外加一个CancelButton
+		注意事项 
+		1. android.support.v4.media.app.NotificationCompat.MediaStyle
+		2. addAction方法并普通样式也可以用，使用后普通通知可以点击展开，展开部分会显示一排添加的图标，并且可以给每个图标设置不同的点击事件 
+		3. 最多可以添加5哥action 并排显示在点击展开的部分 
+		4. setShowActionsInCompactView的参数是添加的action在所有action组成的数组中的下标，从0开始 
+		5. setShowActionsInCompactView设置的action会显示在点击前的通知的右侧，低版本上也可以显示 
+		6. setShowCancelButton(true)会在通知的右上部分显示一个删除图标 5.0以下有效
+	NotificationCompat.BigTextStyle
+	NotificationCompat.BigTextStyle
+10,自定义通知栏布局:
+	LargeIcon如果设置了并且自定义布局内相同位置还有一个icon的画在低版本系统上可能会都显示，高版本不会显示LargeIcon
+
+11,RemoteViews的介绍
+
+备注:
+	一开始需要说明的是，Google之所以要将一些API隐藏（指加上@hide标记的public类、方法或常量）是有原因的。其中很大的原因就是Android系统本身还在不断的进化发展中。从1.0、1.1到现在即将问世的Android 2.3.4。 这些隐藏的API本身可能是不稳定的，所以，使用隐藏API，意味着程序更差的兼容性。
+
+	    如果要我给出建议的话，最好还是不要使用隐藏的API。不过有时为了实现Android应用某些特殊的功能或者效果，隐藏的API往往能发挥意想不到的作用。这些API具体能做些什么事，我就不在这里举例了。正好，如果你不知道隐藏API能做什么的话，那么还是尽早放弃使用它们!		                               

@@ -1,0 +1,130 @@
+EventBus3.0详解
+1,概述:
+    Event:事件，大事; 活动，经历; 结果; 运动项目;
+    Bus:公共汽车，巴士，客机; 机器脚踏车，飞机; [计]（电脑的）总线; [电]信息转移通路，悔流条，母线;
+    EventBus是一个消息总线，针对Android优化的发布/订阅事件总线.以观察者模式实现，用于简化应用程序内各组件间、组件与后台线程间的通信，
+    可以轻易切换线程、开辟线程。
+    简单来说:主要功能是替代Intent,Handler,BroadCast在Fragment，Activity，Service，线程之间传递消息.
+    比如请求网络，等网络返回时通过Handler或Broadcast通知UI，两个Fragment之间需要通过Listener通信，这些需求都可以通过EventBus实现。
+    优点是开销小，代码更优雅。以及将发送者和接收者解耦。
+    耦合:是指两个或两个以上的体系或两种运动形式间通过相互作用而彼此影响以至联合起来的现象。
+    解耦:就是用数学方法将两种运动分离开来处理问题，常用解耦方法就是忽略或简化对所研究问题影响较小的一种运动，只分析主要的运动。
+2,相似产品比较
+    产品名	            开发者	            备注
+    EventBus	        greenrobot	        用户最多，简洁，方便，小巧，文档简洁明了
+    Guava	            google	            一个庞大的工具类库，EventBus只是一个小功能
+    otto	            square	            fork guava ，用的人不少
+    AndroidEventBus	    何红辉	            模仿EventBus开发的
+3,使用前的配置:
+    app中的modul目录下builde.gradle文件中添加依赖后进行同步:
+    dependencies {
+        implementation 'org.greenrobot:eventbus:3.1.1'
+    }
+4,使用EventBus3.0步骤(三部曲)
+    1.定义事件
+    2.准备订阅者
+    3.发送事件
+
+5,EventBus的使用介绍:
+    注册和注销.
+        举个例子，你需要在一个activity中注册eventbus事件，然后定义接收方法，这和Android的广播机制很像，
+        你需要首先注册广播，然后需要编写内部类，实现接收广播，然后操作UI,在EventBus中，你同样需要这么做。
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+            EventBus.getDefault().register(this);
+
+        }
+        @Override
+        protected void onDestroy() {
+            super.onDestroy();
+            EventBus.getDefault().unregister(this);
+        }
+    订阅者
+       定义一个hello方法，传入String参数，在其中操作UI操作.
+       注意：
+       添加注解@Subscribe，其含义为订阅者，在其内传入了threadMode，
+       定义为ThreadMode.MainThread，其含义为该方法在UI线程完成.
+       @Subscribe(threadMode = ThreadMode.MainThread)
+       public void helloEventBus(String message){
+           mText.setText(message);
+       }
+    发布者
+    既然订阅了内容，当然就会发布消息。
+    举个例子，你的这个activity需要http请求，而http请求你肯定是在异步线程中操作，其返回结果后，你可以这么写：
+    String json="";
+    EventBus.getDefault().post(json);
+    原理初探
+    你订阅了内容，所以你需要在该类注册EventBus，而你订阅的方法需要传入String,
+    即你的接收信息为String类型，那么在post的时候，你post出去的也应该是String类型，其才会接收到消息.
+
+    如果你post的是对象
+    首先你需要定义一个类似pojo类：
+
+    public class MessageEvent {
+      public final String name;
+      public final String password;
+      public MessageEvent(String name,String password) {
+        this.name = name;
+        this.password=password;
+      }
+    }
+    然后你post的时候：
+
+    EventBus.getDefault().post(new MessageEvent("hello","world"));
+    当然，你接收的方法也需要改为：
+
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void helloEventBus(MessageEvent message){
+        mText.setText(message.name);
+    }
+6,EventBus 3.0的改动针对2.4的改动
+    新增的@Subscribe
+    该方法为接收消息后在主线程中处理事件，在3.0中
+    @Subscribe(threadMode = ThreadMode.MainThread) //在ui线程执行
+    public void onUserEvent(UserEvent event) {
+         log(event.message);
+    }
+    ThreadMode提供了四个常量：
+    Main:  主线程,在主线程中运行
+    MAIN_ORDERED:    后台线程
+    Async:   后台线程,创建一个异步线程来执行
+    POSTING:  发送线程（默认）,创建一个异步线程来执行,默认的线程模式，在当前线程下运行。如果当前线程是子线程则在子线程中，当前线程是主线程，则在主线程中执行。
+    Background:
+    当事件是在UI线程发出，那么事件处理实际上是需要新建单独线程，如果是在后台线程发出，那么事件处理就在该线程。
+    该事件处理方法应该是快速的，避免阻塞后台线程。
+    在后台线程中执行，如果当前线程是子线程，则会在当前线程执行，如果当前线程是主线程，则会创建一个新的子线程来执行
+
+    Async：发送事件方不需要等待事件处理完毕。
+    这种方式适用于该事件处理方法需要较长时间，例如网络请求。
+
+    EventBus.getDefault().postSticky(new VoteEvent(obj));
+    EventBus.getDefault().registerSticky(this);
+    你会发现非常的麻烦，那么在3.0中：
+    EventBus.getDefault().postSticky(new VoteEvent(obj));
+    EventBus.getDefault().register(this);
+    @Subscribe(sticky = true)
+    什么时候使用sticy,当你希望你的事件不被马上处理的时候，举个栗子，比如说，在一个详情页点赞之后，产生一个VoteEvent，
+    VoteEvent并不立即被消费，而是等用户退出详情页回到商品列表之后，接收到该事件，然后刷新Adapter等。
+    其实这就是之前我们用startActivityForResult和onActivityResult做的事情。
+7,基本使用以及方法介绍:
+
+4,参考文献
+    EventBus官网地址:
+    http://greenrobot.org/eventbus/documentation/
+    EventBus github地址:
+    https://github.com/greenrobot/EventBus
+2,
+2,
+2,
+2,
+2,
+2,
+2,
+2,
+2,
+2,
+2,
+2,
+2,

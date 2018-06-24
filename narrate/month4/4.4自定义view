@@ -1,0 +1,95 @@
+Android View的绘制
+1,自定义View概述
+    Android所有的控件都是View或者View的子类，它其实表示的就是屏幕上的一块矩形区域，
+    用一个Rect来表示，left，top表示View相对于它的parent View的起点，
+    width，height表示View自己的宽高，通过这4个字段就能确定View在屏幕上的位置，
+    确定位置后就可以开始绘制View的内容了。
+
+2,自定义View绘制流程函数调用链
+    -->构造函数(view的初始化)-->onMeasure(测量view大小)-->onSizedChanged(确定view大小)-->onLayout(确定子view的布局)
+    -->onDraw(实际绘制内容)-->视图状态发生变化-->invalidate()-->onDraw
+3,自定义View分类
+    1.自定义ViewGroup
+        自定义ViewGroup一般是利用现有的组件根据特定的布局方式来组成新的组件，大多继承自ViewGroup或各种Layout，包含有子View。
+    2.自定义View
+        在没有现成的View，需要自己实现的时候，就使用自定义View，一般继承自View，SurfaceView或其他的View，不包含子View。
+4,view核心方法介绍
+
+    1,构造函数
+        构造函数是View的入口，可以用于初始化一些的内容，和获取自定义属性
+        代码中创建使用
+        View(Context context)
+        在layout文件使用，它的属性都会在attrs中传递进来。
+        public void View(Context context, AttributeSet attrs) {}
+        这里的默认的defStyleAttr是指它在当前Application或Activity所用的Theme中的默认Style,明确调用的时候才会生效
+        public void View(Context context, AttributeSet attrs, int defStyleAttr) {}
+        在API21的时候才添加上，暂不考虑。
+        public void View(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {}
+    2,测量View大小(onMeasure)
+        View的大小不仅由自身所决定，同时也会受到父控件的影响，为了我们的控件能更好的适应各种情况，一般会自己进行测量。
+        测量View大小使用的是onMeasure函数，我们可以从onMeasure的两个参数中取出宽高的相关数据：
+        @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            int widthsize  MeasureSpec.getSize(widthMeasureSpec);      //取出宽度的确切数值
+            int widthmode  MeasureSpec.getMode(widthMeasureSpec);      //取出宽度的测量模式
+
+            int heightsize  MeasureSpec.getSize(heightMeasureSpec);    //取出高度的确切数值
+            int heightmode  MeasureSpec.getMode(heightMeasureSpec);    //取出高度的测量模式
+        }
+        widthMeasureSpec 和 heightMeasureSpec 这两个 int 类型的参数， 毫无疑问他们是和宽高相关的，
+        但它们其实不是宽和高， 而是由宽、高和各自方向上对应的测量模式来合成的一个值：
+
+        测量模式View.MeasureSpec
+        UNSPECIFIED	    00	默认值，父控件没有给子view任何限制，子View可以设置为任意大小。
+        EXACTLY	        01	表示父控件已经确切的指定了子View的大小。
+        AT_MOST	        10	表示子View具体大小没有尺寸限制，但是存在上限，上限一般为父View大小。
+    3.确定View大小(onSizeChanged)
+        这个函数在视图大小发生改变时调用
+        在测量完View并使用setMeasuredDimension函数之后View的大小基本上已经确定了,
+        因为View的大小不仅由View本身控制，而且受父控件的影响，所以我们在确定View大小的时候最好使用系统提供的onSizeChanged回调函数
+        @Override
+        protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+            super.onSizeChanged(w, h, oldw, oldh);
+        }
+        四个参数，分别为 宽度，高度，上一次宽度，上一次高度。
+    4.确定子View布局位置(onLayout)
+        确定布局的函数是onLayout，它用于确定子View的位置，在自定义ViewGroup中会用到，他调用的是子View的layout函数。
+        在自定义ViewGroup中，onLayout一般是循环取出子View，然后经过计算得出各个子View位置的坐标值，然后用以下函数设置子View位置
+        child.layout(l, t, r, b);
+        参数1:View左侧距父View左侧的距离
+        参数2:View顶部距父View顶部的距离
+        参数3:View右侧距父View左侧的距离
+        参数4:View底部距父View顶部的距离
+    5.绘制内容(onDraw)
+        onDraw是实际绘制的部分，也就是我们真正关心的部分，使用的是Canvas绘图。
+        protected void onDraw(Canvas canvas)
+    6.对外提供操作方法和监听回调
+        自定义完View之后，一般会对外暴露一些接口，用于控制View的状态等，或者监听View的变化.
+
+    7,requestLayout
+        View重新调用一次layout过程
+
+    8,invalidate
+        View重新调用一次draw过程
+    9,orceLayout
+        标识View在下一次重绘，需要重新调用layout过程。
+5,自定义属性
+    自定义控件属性，View有一些基本的属性，比如background等，那么如何定义自己的属性
+        1.res/values/下建立一个attrs.xml
+        其实这个文件名称可以是任意的，写在这里更规范一点，表示里面放的全是view的属性。
+
+        2,创建所需要属性
+        <declare-styleable name="rainbowbar">
+          <attr name="rainbowbar_hspace" format="dimension"></attr>
+          <attr name="rainbowbar_vspace" format="dimension"></attr>
+          <attr name="rainbowbar_color" format="color"></attr>
+        </declare-styleable>
+        format是值该属性的取值类型:
+        一共有：string,color,demension,integer,enum,reference,float,boolean,fraction,flag;
+        3,在View的构造方法中，获得我们的自定义的样式
+        TypedArray a = context.getTheme().obtainStyledAttributes(attrs, R.styleable.CustomTitleView, defStyle, 0);
+6,自定义view的一般操作步骤
+    1、自定义View的属性
+    2、在View的构造方法中获得我们自定义的属性
+    3、重写onMesure
+    4、重写onDraw

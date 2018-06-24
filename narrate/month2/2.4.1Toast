@@ -1,0 +1,53 @@
+Toast的使用详解
+1,Toast概述
+    Toast是Android中用来显示显示信息的一种机制，和Dialog不一样的是，Toast是没有焦点的，而且Toast显示的时间有限，过一定的时间就会自动消失。
+2,Toast的使用效果
+    1,默认弹出吐司,屏幕底部!
+    2,自定义位置
+    3,定义带图片的吐司
+    4,完全自定义布局的方式来定义吐司
+3,Toast的方法介绍
+    构造
+    Toast(Context context)
+    取消
+    cancel()
+    获取显示的持续时间
+    int getDuration()
+    获取位置
+    int getGravity()
+    横向边距
+    public float getHorizontalMargin()
+
+    纵向边距
+    public float getVerticalMargin()
+
+    获取其控件
+    View getView()
+    布局参数
+    WindowManager.LayoutParams getWindowParams()
+
+    获取x轴方向偏移距离
+    int getXOffset()
+    获取Y轴方向的偏移距离
+    int getYOffset()
+    静态实例化
+    static Toast makeText(Context context, CharSequence text, @Duration int duration)
+    static Toast makeText(Context context, @StringRes int resId, @Duration int duration)
+
+    设置显示持续时间
+    setDuration(@Duration int duration)
+
+    设置位置
+    setGravity(int gravity, int xOffset, int yOffset)
+    设置边距
+    setMargin(float horizontalMargin, float verticalMargin)
+
+    设置显示的文本内容
+    setText(CharSequence s)
+    setText(@StringRes int resId)
+    设置view
+    setView(View view)
+
+    弹出
+    show()
+4,

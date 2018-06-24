@@ -1,0 +1,56 @@
+Android布局的高级应用
+1,RadioButton与RadioGroup
+    1、RadioButton表示单个圆形单选框，而RadioGroup是可以容纳多个RadioButton的容器
+    2、每个RadioGroup中的RadioButton同时只能有一个被选中
+    3、不同的RadioGroup中的RadioButton互不相干，即如果组A中有一个选中了，组B中依然可以有一个被选中
+    4、大部分场合下，一个RadioGroup中至少有2个RadioButton
+    5、大部分场合下，一个RadioGroup中的RadioButton默认会有一个被选中，并建议您将它放在RadioGroup中的起始位置
+2,监听事件
+    1. 使用匿名内部类的方式实现监听事件
+        首先为要实现监听的对象绑定监听器，例如为一个Button对象绑定一个监听器botton.setOnClickListener();。
+        然后在setOnClickListener()方法中定义一个OnClickListener的匿名内部类，然后重写内部类中的onClick方法。
+        最后在onClick方法中实现监听事件要实现的逻辑即可。
+        优点有：
+        1.可以在当前类中复用该监听器类
+        2.可以自由访问外部类的所有界面组件
+
+    2. 使用外部类的方式实现监听事件
+        首先要自定义一个外部类，实现OnClickListener接口,并重写onClick方法，在onClick方法中可以定义这个外部类想实现的处理逻辑，
+        那么调用这个外部类实现监听事件时，都可以用super来调用这个类中的处理逻辑。
+        为要实现监听的对象绑定监听器
+        重写onClick方法,定义自己的处理逻辑。
+        优点:
+            当某个事件监听器被多个GUI界面共享，且主要是完成某种业务逻辑的实现
+            不利于提高程序的内聚性
+            不能自由访问创建GUI界面类的组件，编程不够简洁
+
+
+    3. 使用接口方式实现监听事件
+        可以直接在Activity中定义事件处理方法
+        优点为：非常简洁
+    4.直接绑定到标签
+         在布局中要发送事件源中定义一个：
+         android：onClick="clickHandler"
+         然后在该布局对应的Activity定义一个 void clickHandler（void source）方法
+3,CheckBox(复选框)的监听方式
+   setOnCheckedChangeListener(OnCheckedChangeListener l)
+4,Toast和context
+   toast:消息提示,吐司
+   context:
+        Context字面意思上下文，或者叫做场景，也就是用户与操作系统操作的一个过程，比如你打电话，场景包括电话程序对应的界面，以及隐藏在背后的数据；
+        Activity、Service、Application都是Context的子类
+        Android系统的角度来理解：Context是一个场景，代表与操作系统的交互的一种过程。
+        从程序的角度上来理解：Context是个抽象类，而Activity、Service、Application等都是该类的一个实现。
+
+        Activity与Application在作为Context时的区别
+        一个是当前Activity的实例，一个是项目的Application的实例。
+
+        getApplication和getApplicationContext的区别
+        getApplication返回结果为Application，且不同的Activity和Service返回的Application均为同一个全局对象，
+        在ActivityThread内部有一个列表专门用于维护所有应用的application
+        且通过getApplication和getApplicationContext得到的是同一个对象，两者的区别仅仅是返回类型不同。
+        @Override
+        public Context getApplicationContext() {
+            return (mPackageInfo != null) ?
+                    mPackageInfo.getApplication() : mMainThread.getApplication();
+        }

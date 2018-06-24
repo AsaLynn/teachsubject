@@ -1,0 +1,140 @@
+PopupWindow的使用详解
+1,  PopupWindow概述
+        PopupWindow在android.widget包下，是一个以弹窗方式呈现的控件，可以用来显示任意视图(View)，而且会浮动在当前activity的顶部”。
+    通过PopupWindow实现各种各样的弹窗效果,进行信息的展示或者是UI交互，由于PopupWindow自定义布局比较方便，而且在显示位置比较自由不受限制，
+    因此应用特别广泛
+    AlertDialog不能指定显示位置，只能默认显示在屏幕最中间,而PopupWindow是可以指定显示位置的，随便哪个位置都可以，更加灵活。
+2,  PopupWindow的使用
+        PopupWindow的使用非常简单，总的来说分为两步
+        1、调用PopupWindow的构造器创建PopupWindow对象，并完成一些初始化设置。
+        2、调用PopupWindow的showAsDropDown(View view)将PopupWindow作为View组件的下拉组件显示出来；
+        或调用PopupWindow的showAtLocation()方法将PopupWindow在指定位置显示出来。
+        3, setWidth、setHeight和setContentView三者必须实现，否则将不会显示任何视图。
+3,  PopupWindow常用方法
+        构造
+        PopupWindow()
+        PopupWindow(Context context)
+        PopupWindow(Context context, AttributeSet attrs)
+        PopupWindow(Context context, AttributeSet attrs, int defStyleAttr)
+        PopupWindow(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes)
+        PopupWindow(int width, int height)
+        PopupWindow(View contentView)
+        PopupWindow(View contentView, int width, int height)
+        PopupWindow(View contentView, int width, int height, boolean focusable)
+
+        弹框消失
+        dismiss()
+        int getAnimationStyle()
+        Drawable getBackground()
+        View getContentView()
+        entView()
+        float getElevation()
+        Transition getEnterTransition()
+        Transition getExitTransition()
+        int getHeight()
+        int getInputMethodMode()
+        int getMaxAvailableHeight(@NonNull View anchor)
+        int getMaxAvailableHeight(@NonNull View anchor, int yOffset)
+        int getMaxAvailableHeight(
+                    @NonNull View anchor, int yOffset, boolean ignoreBottomDecorations)
+        boolean getOverlapAnchor()
+        int getSoftInputMode()
+        int getWidth()
+        int getWindowLayoutType()
+        boolean isAboveAnchor()
+        boolean isAttachedInDecor()
+        boolean isClippingEnabled()
+        boolean isFocusable()
+        boolean isLayoutInScreenEnabled()
+        boolean isOutsideTouchable()
+        boolean isShowing()
+        boolean isSplitTouchEnabled()
+        boolean isTouchable()
+
+        设置动画样式
+        setAnimationStyle(int animationStyle)
+        setAttachedInDecor(boolean enabled)
+
+        设置背景
+        需要设置一下此参数，点击外边可消失
+        (点击空白处的时候让PopupWindow消失)
+        setBackgroundDrawable(Drawable background)
+        setClippingEnabled(boolean enabled)
+        setClipToScreenEnabled(boolean enabled)
+
+        设置视图内容
+        setContentView(View contentView)
+        setElevation(float elevation)
+        setEnterTransition(@Nullable Transition enterTransition)
+        setEpicenterBounds(Rect bounds)
+        setExitTransition(@Nullable Transition exitTransition)
+
+        是否获得焦点
+        setFocusable(boolean focusable)
+        setHeight(int height)
+        setIgnoreCheekPress()
+        setInputMethodMode(int mode)
+        setLayoutInScreenEnabled(boolean enabled)
+        setLayoutInsetDecor(boolean enabled)
+
+        设置消失监听
+        setOnDismissListener(OnDismissListener onDismissListener)
+
+        是否响应点击事件
+        setOutsideTouchable(boolean touchable)
+        setOverlapAnchor(boolean overlapAnchor)
+        setSoftInputMode(int mode)
+        setSplitTouchEnabled(boolean enabled)
+        setTouchable(boolean touchable)
+        setTouchInterceptor(OnTouchListener l)
+        setTouchModal(boolean touchModal)
+        setWidth(int width)
+        setWindowLayoutType(int layoutType)
+
+        相对某个控件的位置（正左下方），无偏移。
+        showAsDropDown(View anchor)
+        相对某个控件的位置，同时可以设置偏移。
+        参数1:相对某个控件
+        参数2:xoff表示x轴的偏移，正值表示向左，负值表示向右
+        参数3:yoff表示相对y轴的偏移，正值是向下，负值是向上
+        showAsDropDown(View anchor, int xoff, int yoff)
+        相对某个控件的位置，对齐方式（尝试过，但似乎没有效果），同时可以设置偏移。
+        showAsDropDown(View anchor, int xoff, int yoff, int gravity)
+
+        相对于父控件的位置，同时可以设置偏移量。例如正中央Gravity.CENTER，下方Gravity.BOTTOM等
+        showAtLocation(IBinder token, int gravity, int x, int y)
+        showAtLocation(View parent, int gravity, int x, int y)
+        update()
+        update(int width, int height)
+        update(int x, int y, int width, int height)
+        update(int x, int y, int width, int height, boolean force)
+        update(View anchor, boolean updateLocation, int xoff, int yoff,
+                    int width, int height)
+        update(View anchor, int width, int height)
+        update(View anchor, int xoff, int yoff, int width, int height)
+
+
+4,  PopupDecorView
+        PopupDecorView(Context context)
+        cancelTransitions()
+        boolean dispatchKeyEvent(KeyEvent event)
+        boolean dispatchTouchEvent(MotionEvent ev)
+        boolean onTouchEvent(MotionEvent event)
+        requestEnterTransition(Transition transition)
+        startExitTransition(Transition transition, final View anchorRoot,
+                        final TransitionListener listener)
+
+5,  PopupWindow的实现方式:
+        实现方式1:
+        View contentView = LayoutInflater.from(MainActivity.this).inflate(R.layout.popuplayout, null);
+        PopupWindwo popWnd = PopupWindow (context);
+        popWnd.setContentView(contentView);
+        popWnd.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        popWnd.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+        实现方式2:
+
+5,  自定义PopupWindow:
+        BasePopupWindow基类，包含窗口出现和消失的一个背景渐变动画，可以使窗口出现消失显得不那么生硬
+
+        推荐开源库:
+        https://github.com/razerdp/BasePopup

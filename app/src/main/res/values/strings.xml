@@ -1,0 +1,132 @@
+<resources>
+    <string name="app_name">题库</string>
+    <array name="menu_list">
+        <item>menu1</item>
+        <item>menu2</item>
+        <item>menu3</item>
+        <item>menu4</item>
+        <item>menu5</item>
+    </array>
+    <!--月分类大纲条目-->
+    <string name="test_month1">第1月-交互式设计</string>
+    <string name="test_month2">第2月-次世代数据存储思维与技术</string>
+    <string name="test_month3">第3月-***</string>
+    <string name="test_month4">第4月-安全攻防与底层交互</string>
+    <!--月分类大纲条目-->
+    <!--月分类大纲-->
+    <string-array name="test_subject_months">
+        <item>@string/test_month1</item>
+        <item>@string/test_month2</item>
+        <item>@string/test_month3</item>
+        <item>@string/test_month4</item>
+    </string-array>
+    <!--月分类大纲-->
+    <!--第2月大纲-->
+    <array name="test_m2_units">
+        <item>@string/test_m2_u1</item>
+        <item>@string/test_m2_u2</item>
+        <item>@string/test_m2_u3</item>
+        <item>@string/test_m2_u4</item>
+        <item>@string/test_m2_u5</item>
+        <item>@string/test_m2_u6</item>
+        <item>@string/test_m2_u7</item>
+        <item>@string/test_m2_u8</item>
+        <item>@string/test_m2_u9</item>
+        <item>@string/test_m2_u10</item>
+        <item>@string/test_m2_u11</item>
+        <item>@string/test_m2_u12</item>
+        <item>@string/test_m2_u13</item>
+        <item>@string/test_m2_u14</item>
+        <item>@string/test_m2_u15</item>
+        <item>@string/test_m2_u16</item>
+        <item>@string/test_m2_u17</item>
+        <item>@string/test_m2_u18</item>
+        <item>@string/test_m2_u19</item>
+        <item>@string/test_m2_u20</item>
+    </array>
+    <!--第3月大纲-->
+    <array name="test_m3_units">
+        <item>@string/test_m3_u1</item>
+        <item>@string/test_m3_u2</item>
+        <item>@string/test_m3_u3</item>
+        <item>@string/test_m3_u4</item>
+        <item>@string/test_m3_u5</item>
+        <item>@string/test_m3_u6</item>
+        <item>@string/test_m3_u4</item>
+        <item>@string/test_m3_u4</item>
+        <item>@string/test_m3_u4</item>
+        <item>@string/test_m3_u4</item>
+        <item>@string/test_m3_u4</item>
+        <item>@string/test_m3_u4</item>
+        <item>@string/test_m3_u4</item>
+        <item>@string/test_m3_u4</item>
+        <item>@string/test_m3_u4</item>
+        <item>@string/test_m3_u4</item>
+        <item>@string/test_m3_u4</item>
+        <item>@string/test_m3_u4</item>
+        <item>@string/test_m3_u4</item>
+        <item>@string/test_m3_u4</item>
+    </array>
+    <!--第3月大纲-->
+    <!--第4月大纲-->
+    <array name="test_m4_units">
+        <item>@string/test_m4_u1</item>
+        <item>@string/test_m4_u2</item>
+        <item>@string/test_m4_u3</item>
+        <item>@string/test_m4_u4</item>
+        <item>@string/test_m4_u5</item>
+        <item>@string/test_m4_u4</item>
+        <item>@string/test_m4_u4</item>
+        <item>@string/test_m4_u4</item>
+        <item>@string/test_m4_u4</item>
+        <item>@string/test_m4_u4</item>
+        <item>@string/test_m4_u4</item>
+        <item>@string/test_m4_u4</item>
+        <item>@string/test_m4_u4</item>
+        <item>@string/test_m4_u4</item>
+        <item>@string/test_m4_u4</item>
+        <item>@string/test_m4_u4</item>
+        <item>@string/test_m4_u4</item>
+        <item>@string/test_m4_u4</item>
+        <item>@string/test_m4_u4</item>
+    </array>
+    <!--第4月大纲-->
+    <!--第2月大纲条目-->
+    <string name="test_m2_u1">第1单元,Dialog的使用</string>
+    <string name="test_m2_u2">第2单元,Menu的使用</string>
+    <string name="test_m2_u3">第3单元,PopupWindow的使用</string>
+    <string name="test_m2_u4">第4单元,Toast的使用</string>
+    <string name="test_m2_u5">第5单元,Notification的使用</string>
+    <string name="test_m2_u6">第6单元</string>
+    <string name="test_m2_u7">第7单元</string>
+    <string name="test_m2_u8">第8单元</string>
+    <string name="test_m2_u9">第9单元</string>
+    <string name="test_m2_u10">第10单元</string>
+    <string name="test_m2_u11">11,广播</string>
+    <string name="test_m2_u12">第12单元,EventBus的使用!</string>
+    <string name="test_m2_u13">第13单元</string>
+    <string name="test_m2_u14">第14单元</string>
+    <string name="test_m2_u15">第15单元</string>
+    <string name="test_m2_u16">第16单元</string>
+    <string name="test_m2_u17">第17单元</string>
+    <string name="test_m2_u18">第18单元</string>
+    <string name="test_m2_u19">第19单元</string>
+    <string name="test_m2_u20">第20单元</string>
+    <!--第2月大纲条目-->
+    <!--第3月大纲条目-->
+    <string name="test_m3_u1">3.1ContentProvider的使用</string>
+    <string name="test_m3_u2">3.2动画</string>
+    <string name="test_m3_u3">3.3自定义view</string>
+    <string name="test_m3_u4">3.4aidl</string>
+    <!--第3月大纲条目-->
+    <!--第4月大纲条目-->
+    <string name="hello_blank_fragment">hello_blank_fragment</string>
+    <string name="test_m4_u1">4.1</string>
+    <string name="test_m4_u2">4.2动画</string>
+    <string name="test_m4_u3">4.3自定义view</string>
+    <string name="test_m4_u4">4.4aidl</string>
+    <string name="test_m3_u5">5</string>
+    <string name="test_m3_u6">6</string>
+    <string name="test_m4_u5">5</string>
+    <!--第4月大纲条目-->
+</resources>

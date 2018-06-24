@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="all">
+        <item
+            android:id="@+id/group1_item1"
+            android:icon="@mipmap/ic_launcher"
+            android:title="item1"
+            app:showAsAction="always"></item>
+       <!-- <item
+            android:id="@+id/group1_item2"
+            android:icon="@mipmap/ic_launcher"
+            android:title="item2"
+            app:showAsAction="always"></item>-->
+        <!--<item-->
+            <!--android:id="@+id/group1_item6"-->
+            <!--android:title="点我"-->
+            <!--app:showAsAction="always">-->
+            <!--<menu>-->
+                <!--<item-->
+                    <!--android:id="@+id/sub_item1"-->
+                    <!--android:icon="@mipmap/ic_launcher"-->
+                    <!--android:title="sub item1"></item>-->
+                <!--<item-->
+                    <!--android:id="@+id/sub_item2"-->
+                    <!--android:icon="@mipmap/ic_launcher"-->
+                    <!--android:title="sub item2"></item>-->
+                <!--<item-->
+                    <!--android:id="@+id/sub_item3"-->
+                    <!--android:icon="@mipmap/ic_launcher"-->
+                    <!--android:title="sub item3"></item>-->
+            <!--</menu>-->
+        <!--</item>-->
+
+       <!-- <item
+            android:id="@+id/group1_item7"
+            android:icon="@mipmap/ic_launcher"
+            android:title="item7"></item>-->
+    </group>
+</menu>
+
+<!--
+根据编译版本的不同，使用不同，23使用的app：showAsAction ，该属性可以设置menuitem是展示在actionbar上还是现实在overflow中
+其中设置在actionbar上的menuitem只要设置了icon都会显示，
+但是在overflow中的menuitem的icon就分系统版本不同，而有不同，android 4.0之前会显示icon，android4.0之后显示不出icon，
+解决方法如下：
+
+-->
+
+
+
+
+
+
+
+
+
+
+

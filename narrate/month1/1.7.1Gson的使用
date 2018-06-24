@@ -1,0 +1,69 @@
+Gson的使用
+1,概述
+    Gson是谷歌发布的一个json解析框架
+2,使用前的配置:
+    dependencies {
+        implementation 'com.google.code.gson:gson:2.8.2'
+    }
+3,方法介绍
+    Gson()
+    Excluder excluder()
+    FieldNamingStrategy fieldNamingStrategy()
+    T fromJson(JsonElement json, Class<T> classOfT)
+    T fromJson(JsonElement json, Type typeOfT)
+    T fromJson(JsonReader reader, Type typeOfT)
+    T fromJson(Reader json, Class<T> classOfT)
+    T fromJson(Reader json, Type typeOfT)
+
+    将json字符串转化成实体对象
+    T fromJson(String json, Class<T> classOfT)
+    T fromJson(String json, Type typeOfT)
+    TypeAdapter<T> getAdapter(Class<T> type)
+    TypeAdapter<T> getAdapter(TypeToken<T> type)
+    TypeAdapter<T> getDelegateAdapter(TypeAdapterFactory skipPast, TypeToken<T> type)
+    boolean htmlSafe()
+    JsonReader newJsonReader(Reader reader)
+    JsonWriter newJsonWriter(Writer writer)
+    boolean serializeNulls()
+    String toJson(JsonElement jsonElement)
+    toJson(JsonElement jsonElement, Appendable writer)
+    toJson(JsonElement jsonElement, JsonWriter writer)
+
+    将对象准换为json字符串 或者 把list 转化成json
+    String toJson(Object src)
+
+
+    toJson(Object src, Appendable writer)
+    String toJson(Object src, Type typeOfSrc)
+    toJson(Object src, Type typeOfSrc, Appendable writer)
+    toJson(Object src, Type typeOfSrc, JsonWriter writer)
+    JsonElement toJsonTree(Object src)
+    JsonElement toJsonTree(Object src, Type typeOfSrc)
+4,JsonParser介绍
+    JsonElement parse(String json)
+    JsonElement parse(Reader json)
+    JsonElement parse(JsonReader json)
+5,JsonElement介绍
+    BigDecimal getAsBigDecimal()
+    BigInteger getAsBigInteger()
+    boolean getAsBoolean()
+    byte getAsByte()
+    char getAsCharacter()
+    double getAsDouble()
+    float getAsFloat()
+    int getAsInt()
+    JsonArray getAsJsonArray()
+    JsonNull getAsJsonNull()
+    JsonObject getAsJsonObject()
+    JsonPrimitive getAsJsonPrimitive()
+    long getAsLong()
+    Number getAsNumber()
+    short getAsShort()
+    String getAsString()
+    boolean isJsonArray()
+    boolean isJsonNull()
+    boolean isJsonObject()
+    boolean isJsonPrimitive()
+    String toString()
+6,com.google.gson.GsonBuilder
+

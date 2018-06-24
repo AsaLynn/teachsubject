@@ -1,0 +1,33 @@
+2.2.2,ContextMenu的使用
+1,ContextMenu概述
+    ContextMenu是android的context menu上下文菜单，选择某项VIEW后长按menu键，就会显示出来
+    比如EditeText就可以通过长按来弹出拥有“cut”,"copy","paste"等项的ContextMenu。
+    实现ContextMenu，一般要用到Activity以下三个方法：
+    (1)registerForContextMenu(View view)
+    (2)onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+    (3)boolean onContextItemSelected(MenuItem item)
+
+    介绍了这么多，下面给出一个demo演示如何：
+2, ContextMenu和OptionsMenu相比主要有以下区别：
+    1，ContextMenu必须通过Activity的registerForContextMenu(View)来进行注册，而OptionsMenu不用。
+    2，ContextMenu不支持icon,而OptionsMenu支持。
+    3，ContextMenu可以有头，可以通过setHeaderIcon，setHeaderTitle，setHeaderView来设置头，否则就没有头。
+    4，弹出的方式不一样。
+    5，Options Menu的拥有者是Activity，而上下文菜单的拥有者是Activity中的View。每个Activity有且只有一个Options Menu，
+    它为整个Activity服务。而一个Activity往往有多个View，并不是每个View都有上下文菜单，这就需要我们调用registerForContextMenu(View view)来指定。
+3,注意事项：
+     ContextMenu的任何项在被选中后，整个ContextMenu会自动被系统关闭掉，即使多选项也是这样。这样的话，多选项的行为就有些怪异。
+     查看Android的源码后，发现这是个Android的bug,应该是google没考虑多选项的情况。
+     尽管上下文菜单的拥有者是View，生成上下文菜单却是通过Activity中的
+     onCreateContextMenu(ContextMenu menu, View v,ContextMenu.ContextMenuInfo menuInfo)方法，
+     该方法很像生成Options Menu的onCreateOptionsMenu(Menu menu)方法。两者的不同在于，onCreateOptionsMenu只在用户第一次按“Menu”键时被调用，
+     而onCreateContextMenu会在用户每一次长按View时被调用，而且View必须已经注册了上下文菜单。
+     另一个值得注意的就是上图中的ContextMenuInfo，该类的对象被传入
+     onCreateContextMenu(ContextMenu menu, View v,ContextMenu.ContextMenuInfo menuInfo)方法，那么它有什么用呢？
+     有时候，视图元素需要向上下文菜单传递一些信息，比如该View对应DB记录的ID等，这就要使用ContextMenuInfo。
+     需要传递额外信息的View需要重写getContextMenuInfo()方法，返回一个带有数据的ContextMenuInfo实现类对象。
+4,创建和响应上下文菜单
+    在activity的onCreate()方法中为一个view注册上下文菜单
+    在onCreateContextMenuInfo()中生成上下文菜单
+    在onContextItemSelected()中响应上下文菜单项,响应该方法,结果应该返回true.
+

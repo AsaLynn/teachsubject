@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_ll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".month2.m2u3.popupwindow.PopupWindowActivity">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:padding="10dp"
+            android:text="返回"
+            android:textColor="#50484b" />
+
+        <TextView
+            android:id="@+id/menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="10dp"
+            android:text="菜单"
+            android:textColor="#50484b" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="show popWindow" />
+    <Button
+        android:id="@+id/btn1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="自定义popWindow" />
+
+</LinearLayout>

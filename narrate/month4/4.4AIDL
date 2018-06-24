@@ -1,0 +1,70 @@
+AIDL 的概念和使用解析
+1,概述
+    aidl是 Android Interface Definition Language的缩写
+    它是一种android内部进程通信接口的描述语言，通过它我们可以定义进程间的通信接口
+    icp:interprocess communication :内部进程通信
+
+
+
+2,应用场景
+    Android Developer的官方文档中对AIDL做了很好的概括。
+    AIDL (Android Interface Definition Language) is similar to other IDLs you might have worked with.
+        It allows you to define the programming interface that both the client and service agree upon
+        in order to communicate with each other using interprocess communication (IPC).
+        On Android, one process cannot normally access the memory of another process.
+        So to talk, they need to decompose their objects into primitives that the operating system can understand,
+        and marshall the objects across that boundary for you.
+        The code to do that marshalling is tedious to write, so Android handles it for you with AIDL.
+
+    当作为客户的一方和要和作为服务器的一方进行通信时，需要指定一些双方都认可的接口， 这样才能顺利地进行通信。而AIDL就是定义这些接口的一种工具。
+    为什么要借助AIDL来定义，而不直接编写接口呢（比如直接通过Java定义一个Interface）？ 这里涉及到进程间通信（IPC）的问题。
+    和大多数系统一样，在Android平台下,各个进程都占有一块自己独有的内存空间，各个进程在通常情况下只能访问自己的独有的内存空间，
+    而不能对别的进程的内存空间进行访问。 进程之间如果要进行通信，就必须先把需要传递的对象分解成操作系统能够理解的基本类型，
+    并根据你的需要封装跨边界的对象。而要完成这些封装工作，需要写的代码量十分地冗长而枯燥。因此Android提供了AIDL来帮助你完成这些工作。
+    从AIDL的功能来看，它主要的应用场景就是IPC。虽然同一个进程中的client-service也能够通过AIDL定义接口来进行通信，但这并没有发挥AIDL的主要功能。
+    概括来说：
+    如果不需要IPC，那就直接实现通过继承Binder类来实现客户端和服务端之间的通信。
+    如果确实需要IPC，但是无需处理多线程，那么就应该通过Messenger来实现。Messenger保证了消息是串行处理的，其内部其实也是通过AIDL来实现。
+    在有IPC需求，同时服务端需要并发处理多个请求的时候，使用AIDL才是必要的
+
+    AIDL的作用是让你可以在自己的APP里绑定一个其他APP的service，这样你的APP可以和其他APP交互。
+
+3,使用AIDL的基本步骤如下
+    编写.AIDL文件，定义需要的接口
+    实现定义的接口
+    将接口暴露给客户端调用
+
+
+4,使用案例1
+         1. 编写.AIDL文件，定义需要的接口
+         在Android Studio下，右键src文件夹，选择新建AIDL文件，并填写名字，这里我命名为IMyInterface
+         点击Finish按钮之后，会发现main下多了一个名字为AIDL的目录，目录下的包名和Java的包名保持一致，
+         包下即是新建的IMyInterface.aidl文件。
+         内容我们编写如下：
+         package aidl;
+         interface IMyInterface {
+             String getInfor(String s);
+         }
+         接着你sync project一下
+         app/generated/source/aidl/debug/aidl里面发现由aidl文件生成的java文件
+         定义service
+         定义activity
+
+
+         默认情况下，AIDL支持下列所述的数据类型:
+         所有的基本类型（int、float等）
+         String
+         CharSequence
+         List
+         Map
+         其中，List和Map中的元素类型必须是上述类型之一或者由其他AIDL生成的接口类型，或者是已经声明的Pacelable类型。
+         List类型可以指定泛型类，比如写成List<String>, 并且对方接收到的具体实例都是ArrayList
+         Map类型不支持指定泛型类，比如Map<String,String>。只能Map表示类型，并且对方接收到的具体实例都是HashMap
+5,使用案例2
+    1,右键src文件夹，选择新建AIDL文件,名为:IMyAidlInterface
+    2,新建一个service
+    3,将我们的AIDL文件拷贝到第二个项目，然后sycn project一下工程
+    包名要跟第一个项目的一样哦，这之后在Activity中绑定服务
+    4,在第2个项目的activity中,
+4,
+5,

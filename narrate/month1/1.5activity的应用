@@ -1,0 +1,278 @@
+Activity的初步应用
+1,概述
+	一个Activity是一个应用程序组件，提供一个屏幕，用户可以用来交互为了完成某项任务，例如拨号、拍照、发送email、看地图。
+	创建一个activity，你必须创建一个Activity的子类。
+	onCreate()
+	初始化你的activity的基本的组件。更重要的是，这里就是你必须调用setContentView（）来定义activity用户接口而已的地方.
+	onPause()
+	系统调用这个方法当用户离开你的activity。
+　　	setContentView()，传递资源布局的资源ID。
+	Activity的声明和注册
+		AndroidManifest中对其进行注册
+		否则无法被系统访问.
+		<activity android:name=".activity的名称"  
+                  android:label="@string/app_name">     
+		</activity>  
+	如果需要使该activity最先运行，那么使用如下方法配置  
+ 	<activity android:name=".activity的名称"  
+                  android:label="@string/app_name">  
+            <intent-filter>  
+                <action android:name="android.intent.action.MAIN" />  
+                <category android:name="android.intent.category.LAUNCHER" />  
+            </intent-filter>  
+	</activity>  
+	
+2,Activity的启动和关闭
+	启动方式1:开启
+	startActivity(Intent intent)
+	startActivity(Intent intent,Bundle options)
+	Intent指定要么准备的activity你希望启动或描述你希望完成的动作（操作系统选择合适的activity为你，可能来自定不同的应用程序）。
+	一个intent可以传输小量数据被启动的activity使用。
+
+	启动方式2:开启,关闭后会回调onActivityResult方法
+	startActivityForResult(Intent intent, int requestCode)
+	startActivityForResult(Intent intent, int requestCode,Bundle options)
+	startActivityForResult(String who, Intent intent, int requestCode,Bundle options)
+	
+	onActivityResult(int requestCode, int resultCode, Intent data)
+
+	关闭页面
+	finish()
+
+	显式意图:
+	调用Intent.setComponent()或Intent.setClass()方法明确指定了组件名的Intent为显式意图，显式意图明确指定了Intent应该传递给	哪个组件。
+	显示意图非常常用也非常简单一般用于应用程序内之间Activity的相互调用转换
+	隐式意图:
+	没有明确指定组件名的Intent为隐式意图
+	Android系统会根据隐式意图中设置的动作(action)、类别(category)、数据（URI和数据类型）找到最合适的组件来处理这个意图。
+	Action（动作），Category（附加信息），Data（数据，具体内容），Tpye(类型)
+
+	定义隐式意图:
+	<activity android:name="net.loonggg.intent.SecondActivity" >  
+            <intent-filter>  
+  
+                <!-- 自定义的动作 -->  
+                <action android:name="net.loonggg.xxx" />  
+                <!-- 自定义的scheme和host -->  
+                <data  
+                    android:host="www.baidu.com"  
+                    android:path="/person"  
+                    android:scheme="loonggg" />  
+                <!-- 自定义的类型 -->  
+                <data android:mimeType="person/people" />  
+                <!-- 附加信息 -->  
+                <category android:name="android.intent.category.DEFAULT" />  
+            </intent-filter>  
+        </activity>  
+
+		通过自定义的隐式意图启动 
+        Intent intent = new Intent();  
+        intent.setAction("net.loonggg.xxx");  
+        intent.addCategory("android.intent.category.DEFAULT");  
+        intent.setDataAndType(Uri.parse("loonggg://www.baidu.com/person"),  
+                "person/people");  
+        startActivity(intent);  
+	
+3,Intent传递基本数据类型
+	构造方法
+	Intent()
+	Intent(Context packageContext, Class<?> cls)
+	Intent(Intent o)
+	Intent(Intent o, boolean all)
+	Intent(String action)
+	Intent(String action, Uri uri)
+	Intent(String action, Uri uri,Context packageContext, Class<?> cls)
+
+	传递数据类型
+	putCharSequenceArrayListExtra(String name, ArrayList<CharSequence> value)
+	putExtra(String name, boolean value)
+	putExtra(String name, boolean[] value)
+	putExtra(String name, Bundle value)
+	putExtra(String name, byte value)
+	putExtra(String name, byte[] value)
+	putExtra(String name, char value)
+	putExtra(String name, char[] value)
+	putExtra(String name, CharSequence value)
+	putExtra(String name, CharSequence[] value)
+	putExtra(String name, double value)
+	putExtra(String name, double[] value)
+	putExtra(String name, float value)
+	putExtra(String name, float[] value)
+	putExtra(String name, int value)
+	putExtra(String name, int[] value)
+	putExtra(String name, long value)
+	putExtra(String name, long[] value)
+	putExtra(String name, Parcelable value)
+	putExtra(String name, Parcelable[] value)
+	putExtra(String name, Serializable value)
+	putExtra(String name, short value)
+	putExtra(String name, short[] value)
+	putExtra(String name, String value)
+	putExtra(String name, String[] value)
+	putExtras(Bundle extras)
+	putExtras(Intent src)
+	putIntegerArrayListExtra(String name, ArrayList<Integer> value)
+	putParcelableArrayListExtra(String name, ArrayList<? extends Parcelable> value)
+	putStringArrayListExtra(String name, ArrayList<String> value)
+	Intent addCategory(String category)
+	Intent addFlags(int flags)
+
+	String getAction()
+	boolean[] getBooleanArrayExtra(String name)
+	getBooleanExtra(String name, boolean defaultValue)
+	Bundle getBundleExtra(String name)
+	byte[] getByteArrayExtra(String name)
+	byte getByteExtra(String name, byte defaultValue)
+	Set<String> getCategories()
+	char[] getCharArrayExtra(String name)
+	char getCharExtra(String name, char defaultValue)
+	CharSequence[] getCharSequenceArrayExtra(String name)
+	ArrayList<CharSequence> getCharSequenceArrayListExtra(String name)
+	CharSequence getCharSequenceExtra(String name)
+	ClipData getClipData()
+	ComponentName getComponent()
+	int getContentUserHint()
+	Uri getData()
+	String getDataString()
+	double[] getDoubleArrayExtra(String name)
+	double getDoubleExtra(String name, double defaultValue)
+	Bundle getExtras()
+	int getFlags()
+	float[] getFloatArrayExtra(String name)
+	float getFloatExtra(String name, float defaultValue)
+	int[] getIntArrayExtra(String name)
+	ArrayList<Integer> getIntegerArrayListExtra(String name)
+	getIntExtra(String name, int defaultValue)
+	long[] getLongArrayExtra(String name)
+	long getLongExtra(String name, long defaultValue)
+	String getPackage()
+	Parcelable[] getParcelableArrayExtra(String name)
+	<T extends Parcelable> ArrayList<T> getParcelableArrayListExtra(String name)
+	<T extends Parcelable> T getParcelableExtra(String name)
+	String getScheme()
+	Intent getSelector()
+	Serializable getSerializableExtra(String name)
+	short[] getShortArrayExtra(String name)
+	short getShortExtra(String name, short defaultValue)
+	Rect getSourceBounds()
+	String[] getStringArrayExtra(String name)
+	ArrayList<String> getStringArrayListExtra(String name)
+	String getStringExtra(String name)
+	String getType()
+	boolean hasCategory(String category)
+	boolean hasExtra(String name)
+	boolean hasFileDescriptors()
+	
+
+	static Intent getIntentOld(String uri)
+	boolean isAccessUriMode(int modeFlags)
+	static Intent makeMainActivity(ComponentName mainActivity)
+	static Intent makeMainSelectorActivity(String selectorAction,
+            String selectorCategory)
+    static Intent makeRestartActivityTask(ComponentName mainActivity)
+    static String normalizeMimeType(String type)
+    static Intent parseCommandArgs(ShellCommand cmd, CommandOptionHandler optionHandler)
+    static Intent parseIntent(Resources resources, XmlPullParser parser, AttributeSet attrs)
+    static Intent parseUri(String uri, int flags)
+    prepareToEnterProcess()
+    prepareToLeaveProcess(boolean leavingPackage)
+    prepareToLeaveProcess(Context context)
+    prepareToLeaveUser(int userId)
+    static void printIntentArgsHelp(PrintWriter pw, String prefix)
+
+    Intent setAction(String action)
+    setAllowFds(boolean allowFds)
+    Intent setClass(Context packageContext, Class<?> cls)
+    Intent setClassName(Context packageContext, String className)
+    Intent setClassName(String packageName, String className)
+    setClipData(ClipData clip)
+    Intent setComponent(ComponentName component)
+    Intent setData(Uri data)
+    Intent setDataAndNormalize(Uri data)
+    Intent setDataAndType(Uri data, String type)
+    Intent setDataAndTypeAndNormalize(Uri data, String type)
+    setExtrasClassLoader(ClassLoader loader)
+    Intent setFlags(int flags)
+    setPackage(String packageName)
+    setSelector(Intent selector)
+    setSourceBounds(Rect r)
+    Intent setType(String type)
+    Intent setTypeAndNormalize(String type)
+	
+4,清单文件中如何配置Activity和Activity未配置的异常
+	清单文件中如何配置Activity
+		使用activity节点
+	未配置的异常
+	ActivityNotFoundException
+	Bundle对象的创建
+		构造方法
+		Bundle()
+		Bundle(Bundle b)
+		Bundle(ClassLoader loader)
+		Bundle(int capacity)
+		Bundle(PersistableBundle b)
+
+		clear()
+		Object clone()
+		int describeContents()
+		Bundle filterValues()
+
+		static Bundle forPair(String key, String value)
+
+		Bundle getBundle(@Nullable String key)
+		byte getByte(String key)
+		Byte getByte(String key, byte defaultValue)
+		byte[] getByteArray(@Nullable String key)
+		char getChar(String key)
+		char getChar(String key, char defaultValue)
+		char[] getCharArray(@Nullable String key)
+		CharSequence getCharSequence(@Nullable String key)
+		CharSequence getCharSequence(@Nullable String key, CharSequence defaultValue)
+		CharSequence[] getCharSequenceArray(@Nullable String key)
+		ArrayList<CharSequence> getCharSequenceArrayList(@Nullable String key)
+
+		float getFloat(String key)
+		float getFloat(String key, float defaultValue)
+		float[] getFloatArray(@Nullable String key)
+		ArrayList<Integer> getIntegerArrayList(@Nullable String key)
+		<T extends Parcelable> T getParcelable(@Nullable String key)
+		Parcelable[] getParcelableArray(@Nullable String key)
+		<T extends Parcelable> ArrayList<T> getParcelableArrayList(@Nullable String key)
+		Serializable getSerializable(@Nullable String key)
+		short getShort(String key)
+		short getShort(String key, short defaultValue)
+		short[] getShortArray(@Nullable String key)
+		Size getSize(@Nullable String key)
+
+		putAll(Bundle bundle)
+		putBinder(@Nullable String key, @Nullable IBinder value)
+		putBundle(@Nullable String key, @Nullable Bundle value)
+		putByte(@Nullable String key, byte value)
+		putByteArray(@Nullable String key, @Nullable byte[] value)
+		putChar(@Nullable String key, char value)
+		putCharArray(@Nullable String key, @Nullable char[] value)
+		putCharSequence(@Nullable String key, @Nullable CharSequence value)
+		putCharSequenceArray(@Nullable String key, @Nullable CharSequence[] value)
+		putCharSequenceArrayList(@Nullable String key,
+            @Nullable ArrayList<CharSequence> value)
+        putFloat(@Nullable String key, float value)
+        putFloatArray(@Nullable String key, @Nullable float[] value)
+        putIntegerArrayList(@Nullable String key, @Nullable ArrayList<Integer> value)
+        putParcelable(@Nullable String key, @Nullable Parcelable value) 
+        putParcelableArray(@Nullable String key, @Nullable Parcelable[] value)
+        putParcelableArrayList(@Nullable String key,
+            @Nullable ArrayList<? extends Parcelable> value)
+        putParcelableList(String key, List<? extends Parcelable> value)
+        putSerializable(@Nullable String key, @Nullable Serializable value)
+        putShort(@Nullable String key, short value)
+        putShortArray(@Nullable String key, @Nullable short[] value)
+        putSize(@Nullable String key, @Nullable Size value)
+        putSizeF(@Nullable String key, @Nullable SizeF value)
+        putSparseParcelableArray(@Nullable String key,
+            @Nullable SparseArray<? extends Parcelable> value)
+		putStringArrayList(@Nullable String key, @Nullable ArrayList<String> value)	
+		readFromParcel(Parcel parcel) 
+		            
+	Bundle在Activity之间传递数据
+		创建Bundle调用put
+5,隐藏的API本身可能是不稳定的，所以，使用隐藏API，意味着程序更差的兼容性。@hide

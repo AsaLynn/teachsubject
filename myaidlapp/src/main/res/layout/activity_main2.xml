@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.think.app.Main2Activity">
+
+    <com.think.app.view.RoundedLetterView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:rlv_titleText="AAAAAAA"
+        app:rlv_titleSize="28sp"
+        app:rlv_backgroundColorValue="@color/colorPrimary"
+        app:rlv_titleColor="@color/colorAccent"
+        />
+
+    <com.think.app.view.RoundedLetterView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        app:rlv_titleText="BB"
+        app:rlv_titleSize="20sp"
+        app:rlv_backgroundColorValue="@color/colorPrimary"
+        app:rlv_titleColor="@color/colorAccent"
+        />
+
+</LinearLayout>

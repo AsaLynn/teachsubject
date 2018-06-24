@@ -1,0 +1,65 @@
+SharedPreferences使用详解
+1,概述
+    开发中因为数据库连接跟操作等耗时大大影响了程序的效率，因此我们使用键值这种一一对应的关系来存放这些配置信息。
+    SharePreferences是用来存储一些简单配置信息的一种机制，使用Map数据结构来存储数据，以键值对的方式存储，采用了XML格式将数据存储到设备中。
+    例如保存登录用户的用户名和密码。只能在同一个包内使用，不能在不同的包之间使用，其实也就是说只能在创建它的应用中使用，其他应用无法使用。
+    SharedPreferences正是Android中用于实现这中存储方式的技术。
+    创建的存储文件保存在/data/data/<package name>/shares_prefs文件夹下
+
+    SharedPreferences的能够轻松的存放数据和读取数据。SharedPreferences只能保存简单类型的数据，
+    例如，String、int等。
+    一般会将复杂类型的数据转换成Base64编码，然后将转换后的数据以字符串的形式保存在 XML文件中，再用SharedPreferences保存。
+2,使用SharedPreferences保存key-value对的步骤
+    （1）使用Context类的getSharedPreferences方法获得SharedPreferences对象，
+    其中存储key-value的文件的名称由getSharedPreferences方法的第一个参数指定。
+    SharedPreferences sp = getSharedPreferences(DATABASE, Activity.MODE_PRIVATE);
+    （2）使用SharedPreferences接口的edit获得SharedPreferences.Editor对象。
+    Editor editor = sp.edit();
+    （3）通过SharedPreferences.Editor接口的putXxx方法保存key-value对。
+    其中Xxx表示不同的数据类型。例如：字符串类型的value需要用putString方法。
+    调用Editor.putxxxx方法，两个参数分别为键和值。
+    （4）通过SharedPreferences.Editor接口的commit方法保存key-value对。
+    commit方法相当于数据库事务中的提交（commit）操作。
+    Editor.commit()
+    插入数据：
+    调用Editor.putxxxx方法，两个参数分别为键和值。
+    获取数据：
+    调用Editor.getxxxx方法，两个参数分别为键和不存在指定键时的默认值。
+    删除数据：
+    调用Editor.remove方法，参数为指定的键。
+    清空所有数据：
+    调用Editor.clear方法
+3,SharedPreferences
+    SharedPreferences是一个接口,所有的方法都是抽象的.
+    contains(String key);
+    Editor edit()
+    Map<String, ?> getAll()
+    boolean getBoolean(String key, boolean defValue);
+    float getFloat(String key, float defValue);
+    int getInt(String key, int defValue);
+    long getLong(String key, long defValue);
+    String getString(String key, @Nullable String defValue);
+    Set<String> getStringSet(String key, @Nullable Set<String> defValues);
+    void registerOnSharedPreferenceChangeListener(OnSharedPreferenceChangeListener listener);
+    void unregisterOnSharedPreferenceChangeListener(OnSharedPreferenceChangeListener listener);
+4,Editor
+    Editor是接口
+    void apply();
+    Editor clear();
+    boolean commit();
+    Editor putBoolean(String key, boolean value);
+    Editor putFloat(String key, float value);
+    Editor putInt(String key, int value);
+    Editor putLong(String key, long value);
+    Editor putString(String key, @Nullable String value);
+    Editor putStringSet(String key, @Nullable Set<String> values);
+    Editor remove(String key);
+
+5,OnSharedPreferenceChangeListener
+    接口监听
+    其暴漏的方法
+    onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key)
+1,
+1,
+1,
+1,

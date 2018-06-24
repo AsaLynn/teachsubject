@@ -1,0 +1,78 @@
+第2个月第2单元
+Menu
+1,Menu的使用
+     1. 代码生成menu
+        1.1重写Activity的boolean onCreateOptionsMenu()返回true,创建选项菜单
+        1.2通过Menu的 MenuItem add()方法添加选项菜单项
+            public MenuItem add(int groupId,int itemId,int order,CharSequence title);
+            如果groupId、itemId、order省略，默认都是0，显示顺序按添加顺序显示
+            groupId:
+            可以对MenuItem进行分组，以便可以再代码中对某一组MenuItem进行操作，如menu.setGroupXXX();
+            itemId
+            MenuItem的id，可以使用menuItem.getItemId(int id)获取到，便于对MenuItem的点击事件处理
+            order：
+            根据这个对menuItem的排序，越小排在越前面，如果某两个item的order相同，则按照代码添加顺序排列
+            title：
+            该menuitem的内容
+
+     2. xml生成menu
+        2.1在res目录下新建menu目录，在这下面创建menu资源文件如main_menu.xml
+        <?xml version="1.0" encoding="utf-8"?>
+        <menu xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto">
+            <item
+                android:id="@+id/group1_item1"
+                android:icon="@mipmap/ic_launcher"
+                android:title="item1"
+                app:showAsAction="always">
+            </item>
+        </menu>
+     3. 重写boolean onOptionsItemSelected(MenuItem item)方法来出列MenuItem的点击事件
+        3.1 MenuItem的int getItemId()方法可以获取id
+        3.2 根据不同MenuItem的id来处理其点击事件
+
+     4. 通过ActionBar可以实现自定义的Menu
+        4.1通过getSupportActionBar()获取到ActionBar的实例
+        4.2通过其setCustomView(int resId)方法设置自定义的布局.
+        4.3设置显示自定义的布局
+            setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM)
+            setDisplayShowCustomEnabled(true)
+        4.4实例化自定义布局中的控件.
+            actionBar.getCustomView().findViewById(R.id.image_view)
+
+     5. MenuItem中其他方法的介绍
+            5.1响应或者屏蔽MenuItem的点击事件
+                 通过MenuItem setOnMenuItemClickListener(MenuItem.OnMenuItemClickListener menuItemClickListener)设置监听
+                 重写boolean onMenuItemClick(MenuItem item)方法,返回true屏蔽,false则响应.
+            5.2 对MenuItem来设置图标.
+                MenuItem setIcon(Drawable icon)
+                MenuItem setIcon(@DrawableRes int iconRes)
+
+                设置标题文字
+                MenuItem setTitle(CharSequence title)
+                MenuItem setTitle(@StringRes int title)
+
+                设置显示隐藏
+                MenuItem setVisible(boolean visible)
+                MenuItem setEnabled(boolean enabled);
+
+                获取组id
+                getGroupId()
+
+                获取id
+                int getItemId()
+
+                获取标题文字
+                CharSequence getTitle()
+
+     6  Menu方法介绍
+            添加MenuItem
+            MenuItem add(CharSequence title)
+            MenuItem add(@StringRes int titleRes)
+            MenuItem add(int groupId, int itemId, int order, CharSequence title)
+            MenuItem add(int groupId, int itemId, int order, @StringRes int titleRes)
+            addSubMenu(@StringRes final int titleRes)
+            addSubMenu(final int groupId, final int itemId, int order, final CharSequence title)
+            addSubMenu(int groupId, int itemId, int order, @StringRes int titleRes)
+            获取MenuItem
+            MenuItem getItem(int index)

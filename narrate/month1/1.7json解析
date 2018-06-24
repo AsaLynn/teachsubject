@@ -1,0 +1,64 @@
+Json解析的三种方式Gson、FastJson、Json
+    1,Gson
+            bean:
+    		Gson gson = new Gson();
+    		LoginInfo loginInfo = gson.fromJson(text, LoginInfo.class);//bean
+
+    		array:
+    		Gson gson = new Gson();
+    		Type type = new TypeToken<List<StuClzInfo>>() {}.getType();
+    		List<StuClzInfo> list = gson.fromJson(text, type);//list<bean>
+
+    		bean中带array:
+    		SchoolInfo info = gson.fromJson(text, SchoolInfo.class);
+    		list = info.getClazz();//bean.list<bean>
+    2,FastJson
+    		bean:
+    		LoginInfo loginInfo1 = JSON.parseObject(text, LoginInfo.class);
+
+    		array:
+    		List<StuClzInfo> list = JSON.parseArray(text, StuClzInfo.class);
+
+    		bean中带array:
+    		SchoolInfo info = JSON.parseObject(text, SchoolInfo.class);
+    		List<StuClzInfo> list = info.getClazz();
+    3,Json
+    bean:
+    		JSONObject jsonObject = new JSONObject(text);
+    		String code = jsonObject.getString("resultCode");
+
+    		array:
+    		ArrayList<StuClzInfo> list = new ArrayList<>();
+    		JSONArray array = new JSONArray(text);
+            for (int i = 0; i < array.length(); i++) {
+                    StuClzInfo info = new StuClzInfo();
+                    JSONObject object = array.getJSONObject(i);
+                    info.setCode(object.getString("code"));
+                    info.setCount(object.getInt("count"));
+                    list.add(info);
+            }
+
+
+    		bean中带array:
+    		try {
+                JSONObject object = new JSONObject(text);
+                String resultCode = object.getString("resultCode");
+                if ("1".equals(resultCode)) {
+                    tv_name.setText(object.getString("school"));
+                    //object.getString("")
+                    JSONArray clazz = object.getJSONArray("clazz");
+                    List<StuClzInfo> list = new ArrayList<>();
+                    for (int i = 0; i < clazz.length(); i++) {
+                        JSONObject o = clazz.getJSONObject(i);
+                        StuClzInfo info = new StuClzInfo();
+                        info.setCode(o.getString("code"));
+                        info.setCount(o.getInt("count"));
+                        list.add(info);
+                    }
+                    JsonListAdapter adapter = new JsonListAdapter(list);
+                    lv_content.setAdapter(adapter);
+
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }

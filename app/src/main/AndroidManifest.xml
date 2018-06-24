@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.think.mytest">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".monthsubjects.Month2Activity" />
+        <activity android:name=".month2.m2u2.menu.MenuCodeActivity" />
+        <activity android:name=".month2.m2u2.menu.MenuXmlActivity" />
+
+        <activity android:name=".month2.m2u2.menu.MenuCustomActivity" />
+        <activity android:name=".month2.m2u2.menu.MenuDrawerActivity" />
+        <activity android:name=".month2.m2u2.menu.MenuSubMenuActivity" />
+        <activity android:name=".month2.m2u2.menu.ContextMenuActivity" />
+        <activity android:name=".month2.m2u2.menu.PopupMenuActivity" />
+        <activity android:name=".month2.m2u3.popupwindow.PopupWindowActivity" />
+        <activity android:name=".month2.m2u4.toast.ToastActivity" />
+        <activity android:name=".monthsubjects.Month4Activity" />
+        <activity android:name=".customview.CustomViewActivity" />
+
+        <service
+            android:name=".myaidl.MyService"
+            android:process="com.example.think.mytest.aidl" />
+
+        <activity android:name=".myaidl.AidlDemoActivity" />
+
+        <service
+            android:name=".myaidl.MyAppService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity android:name=".myxutils.XutilsDemoActivity" />
+        <activity android:name=".month1.unit4.TempActivity" />
+        <activity android:name=".month2.m2u2.menu.ContextMenuXmlActivity" />
+        <activity android:name=".monthsubjects.Month1Activity" />
+        <activity android:name=".month2.m2u5.notification.NotificationDemoActivity" />
+        <activity android:name=".month2.m2u6.sharedpreferences.SPActivity" />
+        <activity android:name=".month3.m3u1.contentprovider.ContentProviderActivity" />
+        <activity android:name=".month2.m2u11.eventbus.EventBusActivity" />
+        <activity android:name=".month2.m2u11.eventbus.EventBus2Activity" />
+
+        <receiver android:name=".month2.m2u11.broadcast.MyBroadcastReceiver">
+            <intent-filter>
+                <action android:name="month2.m2u11.broadcast.MyBroadcastReceiver" />
+            </intent-filter>
+        </receiver>
+
+        <activity android:name=".month2.m2u11.broadcast.BroadcastActivity" />
+        <activity android:name=".month2.m2u14.viewpager.ViewPagerActivity" />
+        <activity android:name=".month2.m2u14.viewpager.ViewPagerDemoActivity" />
+        <activity android:name=".month2.m2u14.viewpager.ViewPager2Activity"></activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,113 @@
+ContentProvider使用详解
+1,概述:
+    ContentProvider(内容提供者)，ContentProvider也是android的四大组件之一,
+    ContentProvider为不同的软件之间数据共享，提供统一的接口。
+    ContentProvider是以类似数据库中表的方式将数据暴露，也就是说ContentProvider就像一个“数据库”。
+    那么外界获取其提供的数据，也就应该与从数据库中获取数据的操作基本一样，只不过是采用URI来表示外界需要访问的“数据库”。
+    至于如何从URI中识别出外界需要的是哪个“数据库”这就是Android底层需要做的事情了，
+    也就是说，如果我们想让其他的应用使用我们自己程序内的数据，就可以使用ContentProvider定义一个对外开放的接口，
+    从而使得其他的应用可以使用我们自己应用中的文件、数据库内存储的信息。当然，自己开发的应用需要给其他应用共享信息的需求可能比较少见，
+    但是在Android系统中，很多数据如：联系人信息、短信信息、图片库、音频库等，这些信息在开发中还是经常用到的，
+    这些信息谷歌工程师已经帮我们封装好了，我们可以使用谷歌给我的Uri去直接访问这些数据。
+    所以对于ContentProvider我们还是需要认真的学习的，在遇到获取联系人信息，图片库，音视频库等需求的时候，才能更好的实现功能。
+
+    为什么会有内容提供者:
+    当应用继承ContentProvider类，并重写该类用于提供数据和存储数据的方法，就可以向其他应用共享其数据。
+    虽然使用其他方法也可以对外共享数据，但数据访问方式会因数据存储的方式而不同，
+    如：采用文件方式对外共享数据，需要进行文件操作读写数据；采用sharedpreferences共享数据，需要使用sharedpreferences API读写数据。
+    而使用ContentProvider共享数据的好处是统一了数据访问方式，这也是为什么会有内容提供者的原因。
+
+    怎么使用内容提供者:
+    内置文档:
+    file:///D:/adt-bundle-windows-x86_64_20140101/sdk/docs/reference/android/content/ContentProvider.html
+    内容提供者是android应用程序的基本构建块之一，它们封装数据并将封装的数据通过单一的ContentResolver接口提供给应用程序。
+    当你需要在多个应用之间共享数据的时候就需要用到内容提供者。
+    例如，手机中的联系人数据会被多个应用所用到所以必须要用内容提供者存储起来。
+    如果你不需要在多个应用之间共享数据，你可以使用一个数据库，直接通过SQLite数据库。
+     当通过content resolver发送一个请求时，系统会检查给定的URI并把请求传给有注册授权的Contentprovider。
+     UriMatcher类有助于解析uri。
+
+     需要实现的主要方法是：
+     public boolean onCreate() 在创建ContentProvider时调用
+     public Cursor query(Uri, String[], String, String[], String) 用于查询指定Uri的ContentProvider，返回一个Cursor
+     public Uri insert(Uri, ContentValues) 用于添加数据到指定Uri的ContentProvider中，(外部应用向ContentProvider中添加数据)
+     public int update(Uri, ContentValues, String, String[]) 用于更新指定Uri的ContentProvider中的数据
+     public int delete(Uri, String, String[]) 用于从指定Uri的ContentProvider中删除数据
+     public String getType(Uri) 用于返回指定的Uri中的数据的MIME类型
+
+     Uri 通用资源标志符（Universal Resource Identifier）Uri代表要操作的数据，Android中可用的每种资源 - 图像、视频片段等都可以用Uri来表示。Uri的结构由以下几个部分组成
+     scheme、authority、path、query和fragment组成。其中authority又分为host和port。它的格式根据划分的详细程度可以分为三种
+     如下：
+     [scheme:][scheme-specific-part][#fragment]
+     [scheme:][//authority][path][?query][#fragment]
+     [scheme:][//host:port][path][?query][#fragment]——最详细的划分形式
+
+     看到这里肯定有人糊里糊涂的，接着我们就来举一个例子来帮助大家详细的理解Uri这个类的结构
+     假如有这么一个Uri:http://www.baidu.com:8080/yourpath/fileName.html?id=15&name=du#dmk
+     你能将上述Uri进行提取吗？接着我们就比着标准的格式[scheme:][//host:port][path][?query][#fragment]来将这个Uri各个部分提取出来
+     scheme:根据标准格式可以看出这里的scheme就是Uri前面//前面的部分这里也就是http:。
+     fragment:dmk这个也是比较容易找到的，在#后面
+     query:id=15&name=du#dmk。从标准格式可以看到在"#"之前"?"之后的部分是query，在这里当然就是id=15&name=du#dmk了。
+     authority:从格式二中可以看到authority是在//后的部分，它的终点就是在path之前所以这里的authority就是www.baidu.com:8080
+     path：path就是？之前，主机之后的部分那就是yourpath/fileName.html
+     host和port:因为主机可以分为host和port所以这里的host和port分别为：www.baidu.com和8080
+     这里要提醒大家注意的是：在Uri中并不是上述所有的字段都必须有的除了scheme、authority是必须要有的，其它的几个path、query、fragment，它们每一个可以选择性的要或不要，但顺序不能变，比方说在上述Uri中没有path那它的格式就为：http://www.baidu.com:8080/?id=15&name=du#dmk。
+     在理解了Uri的格式之后，有的人可能会说Uri的各个字段能否用代码获取？答案是肯定的
+     这里我们同样以http://www.baidu.com:8080/yourpath/fileName.html?id=15&name=du#dmk为例
+     getScheme() :获取Uri中的scheme字符串部分，在这里是http
+     getSchemeSpecificPart():获取Uri中的scheme-specific-part:部分，这里是:http://www.baidu.com:8080/yourpath/fileName.html?
+     getFragment():获取Uri中的fragment部分，即dmk
+     getAuthority():获取Uri中Authority部分，即www.baidu.com:8080
+     getPath():获取Uri中path部分，即/yourpath/fileName.html
+     getQuery():获取Uri中的query部分，即id=15&name=du
+     getHost():获取Authority中的Host字符串，即www.baidu.com
+     getPost():获取Authority中的Port字符串，即8080
+
+2,ContentResolver
+     在了解了Uri之后就可以来学习学习ContentResolver了，前面我们说到ContentProvider共享数据是通过定义一个对外开放的统一的接口来实现的。然而，应用程序并不直接调用这些方法，而是使用一个 ContentResolver 对象，调用它的方法作为替代。ContentResolver可以与任意内容提供者进行会话，与其合作来对所有相关交互通讯进行管理。当外部应用需要对ContentProvider中的数据进行添加、删除、修改和查询操作时，可以使用ContentResolver类来完成，要获取ContentResolver对象，可以使用Context提供的getContentResolver()方法。ContentResolver cr = getContentResolver();在上面我们提到ContentProvider可以向其他应用程序提供数据，与之对应的ContentResolver则负责获取ContentProvider提供的数据，修改、添加、删除更新数据等；
+
+     ContentResolver 类也提供了与ContentProvider类相对应的四个方法：
+     public Uri insert(Uri uri, ContentValues values)    该方法用于往ContentProvider添加数据。
+     public int delete(Uri uri, String selection, String[] selectionArgs)   该方法用于从ContentProvider删除数据。
+     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs)   该方法用于更新ContentProvider中的数据。
+     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)   该方法用于从ContentProvider中获取数据
+3,UriMatch
+    UriMatcher 类主要用于匹配Uri.这里的匹配是发生在ContentProvider中的，假如我们向ContentProvider中插入一条数据，
+    不可能为所欲为的想怎么干就怎么干，在ContentProvider肯定要做一个判断，只有在符合条件下才会去执行你想要执行的操作，
+    这里的判断就是用UriMatch进行匹配，假如是系统的ContentProvider如联系人、图库、视频库等，
+    这些系统都提供了Uri我们可以根据系统提供的Uri来操作相应的数据。其实UriMatch的用法非常简单，查阅谷歌官方文档你会发现有这么几个方法
+    ①publicUriMatcher(int code) 它的作用就是创建一个UriMatch对象
+    ②public voidaddURI(String authority,String path, int code)
+    它的作用是在ContentProvider添加一个用于匹配的Uri，当匹配成功时返回code。
+    Uri可以是精确的字符串，Uri中带有*表示可匹配任意text，#表示只能匹配数字。
+    ③public int match(Uri uri) 这里的Uri就是传过来的要进行验证，
+    匹配的Uri假如传过来的是：content://com.example.test/student/#,则content://com.example.test/student/10可以匹配成功，这里的10可以使任意的数字。
+4,ContentObserver用法
+     ContentObserver——内容观察者，从其名字我们可以看出它的作用就是观察，观察什么？观察指定的Uri引起的数据库的变化，然后通知主线程，根据需求做我们想要做的处理。这样说大家可能理解的不是特别透彻，这样跟大家说它可以实现类似于Adapter的notifyDataSetChanged()这个方法的作用，比方说当观察到ContentProvider的数据变化时会自动调用谷歌工程师给我们提供的好的方法，可以在此方法中通知主线程数据改变等等。那么问题来了，应该怎样实现这样的功能呢？首先要做的就是注册这个观察者，这里的注册是在需要监测ContentProvider的应用中进行注册并不是在ContentProvider中而在ContentProvider中要做的就是当数据变化时进行通知，这里的通知的方法谷歌已经帮我们写好，直接调用就行了，查看谷歌文档你会发现在ContentResolver中有这样的介绍：
+    public final void registerContentObserver (Uri uri, boolean notifyForDescendents, ContentObserver observer)
+    注册一个观察者实例，当指定的Uri发生改变时，这个实例会回调实例对象做相应处理。
+    参数：uri:需要观察的Uri
+              notifyForDescendents：如果为true表示以这个Uri为开头的所有Uri都会被匹配到，
+        如果为false表示精确匹配，即只会匹配这个给定的Uri。
+      举个例子，假如有这么几个Uri：
+    ①content://com.example.studentProvider/student
+    ②content://com.example.studentProvider/student/#
+    ③content://com.example.studentProvider/student/10
+    ④content://com.example.studentProvider/student/teacher
+    假如观察的Uri为content://com.example.studentProvider/student，当notifyForDescendents为true时则以这个Uri开头的Uri的数据变化时都会被捕捉到，在这里也就是①②③④的Uri的数据的变化都能被捕捉到，当notifyForDescendents为false时则只有①中Uri变化时才能被捕捉到。
+           看到registerContentObserver 这个方法，根据语言基础我想大家能够想到ContentResolver中的另一个方法
+    public final voidunregisterContentObserver(ContentObserverobserver)它的作用就是取消对注册的那个Uri的观察，这里传进去的就是在registerContentObserver中传递进去的ContentObserver对象。到这关于注册和解除注册的ContentObserver可能大家都比较清楚了，那么问题来了，怎么去写一个ContentObserver呢？其实它的实现很简单，直接创建一个类继承ContentObserver需要注意的是这里必须要实现它的构造方法
+    public ContentObserver(Handlerhandler)
+    这里传进去的是一个Handler对象，这个Handler对象的作用一般要依赖于ContentObserver的另一个方法即
+    public void onChange(boolean selfChange)
+    这个方法的作用就是当指定的Uri的数据发生变化时会回调该方法，此时可以借助构造方法中的Handler对象将这个变化的消息发送给主线程，
+    当主线程接收到这个消息之后就可以按照我们的需求来完成相应的操作，比如上面提到的类似于Adapter的notifyDataSetChanged()的作用，
+    下面的案例也是完成了这个功能，准备工作完成之后来看一个案例，相信这个案例会让你对以上知识了解的更加深入。
+5,ContentProvider详解和介绍
+
+    初始化操作
+    boolean onCreate()
+
+
+
+

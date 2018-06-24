@@ -1,0 +1,30 @@
+初识NDK
+1,概述
+	sdk:software development kit,SDK开发可以称为上层开发
+	Android NDK,全称:Android Native Development Kit,被Google简称为“NDK”.
+	Native:本国的; 土著的; 天生的; 天真的，纯朴的;
+	Development:发展，进化; 被发展的状态; 新生事物，新产品; 开发区;
+	Kit:衣物和装备; 成套用品; 配套元件
+	Android程序运行在Dalvik虚拟机中，NDK允许用户使用类似C / C++之类的原生代码语言执行部分程序。
+	JNI全称为Java Native Interface（JAVA本地调用）
+	
+	什么是NDK:
+	NDK是一系列工具的集合,
+	帮助开发者快速开发C（或C++）的动态库，并能自动将so和java应用一起打包成apk,是 Android 平台支持 C 开发的开端!
+	从C / C++生成原生代码库所需要的工具和build files
+	将一致的原生库嵌入可以在Android设备上部署的应用程序包文件
+	支持所有未来Android平台的一系列原生系统头文件和库
+	为何要用到NDK?
+	1. 代码的保护，由于apk的java层代码很容易被反编译，而C/C++库被反编译的难度较大。
+	2. 在NDK中调用第三方C/C++库，因为大部分的开源库都是用C/C++代码编写的。
+	3. 便于移植，用C/C++写的库可以方便在其他的嵌入式平台上再次使用。
+	4.将要求高性能的应用逻辑使用 C 开发，从而提高应用程序的执行效率。
+2,Android.mk文件
+	Android.mk文件是Android提供的一种makefile文件，是为了向编译系统描述你的源代码.
+	用来指定诸如编译生成so库名、引用的头文件目录、需要编译的.c/.cpp文件和.a静态库文件等.
+	一个Android.mk文件可以编译多个模块，每个模块属下列类型之一：
+		1）APK程序 -- 一般的Android程序，编译打包生成apk文件
+		2）JAVA库 -- java类库，编译打包生成jar文件
+		3)C\C++应用程序 -- 可执行的C\C++应用程序
+		4）C\C++静态库 -- 编译生成C\C++静态库，并打包成.a文件
+		5）C\C++共享库 -- 编译生成共享库（动态链接库），并打包成.so文， 有且只有共享库才能被安装/复制到您的应用软件（APK）

@@ -1,0 +1,43 @@
+常用控件以及用法
+1,分类
+    文本类控件
+        TextView 负责展示文本，非编辑
+        EditText 可编辑文本控件
+    按钮类控件
+        Button 按钮
+        ImageButton 图片按钮
+        RadioButton与RadioGroup 单选按钮
+        CheckBox 复选按钮
+    图片控件
+        ImageView 负责显示图片
+    进度条控件
+        ProgressBar 进度条
+2,TextView
+    TextView是 Android 程序开发中最常用的控件之一,主要功能是向用户展示文本的内容，它是不可编辑的 ,只能通过初始化设置或在程序中修改。
+3,EditText
+     EditText是可以编辑的，可以用来与用户进行交互，其用法和TextView也是类似的
+4,Button
+     Button控件也是使用过程中用的最多的控件之一，所以需要好好掌握。
+     用户可以通过单击 Button 来触发一系列事件,然后为 Button 注册监听器,来实现 Button 的监听事件。
+
+     Android的按钮单击事件及监听器的实现方式
+     通过匿名内部类作为事件监听器类
+     使用实现接口的方式来进行注册
+5,ImageButton
+     ImageButton是一个按钮，ImageButton可以实现我们任何想要的图片按钮的效果，比如我们租一个下载的按钮等等。
+     它要比button实现的要好看，并且体验要好很多, 不过它是以图片作为背景，没有文字。利用属性android:src="图片位置"来设置图片背景。
+6,RadioButton与RadioGroup
+    RadioButton(单选按钮)在 Android 平台上也比较常用,比如一些选择项会用到单选按钮。
+    它是一种单个圆形单选框双状态的按钮,可以选择或不选择。在 RadioButton 没有 被选中时,用户通过单击来选中它。但是,在选中后,无法通过单击取消选中。
+
+    RadioGroup 是单选组合框,用于 将 RadioButton 框起来。在多个 RadioButton被 RadioGroup 包含的情况下,
+    同一时刻只可以选择一个 RadioButton,并用 setOnCheckedChangeListener 来对 RadioGroup 进行监听。
+7,CheckBox
+    CheckBox(复选按钮),顾名思义是一种可以进行多选的按钮,默认以矩形表示。
+    与 RadioButton 相同,它也有选中或者不选中双状态。我们可以先在布局文件中定义多选按钮,
+    然后对每一个多选按钮进行事件监听 setOnCheckedChangeListener,通过 isChecked 来判断 选项是否被选中,做出相应的事件响应。
+8,ImageView
+    ImageView 是一个图片控件,负责显示图片，图片的来源可以是系统提供的资源文件,也可以是 Drawable 对象，
+    相对来说，图片空间还是比较好掌握的，因为前面有讲过ImageButton, 很多属性都是相同的。
+9,ProgressBar
+    ProgressBar 用于在界面上显示一个进度条,表示我们的程序正在加载一些数据，运行程序，会看到屏幕中有一个圆形进度条正在旋转。

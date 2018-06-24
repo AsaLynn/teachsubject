@@ -1,0 +1,41 @@
+2.2.3PopupMenu的使用详解
+    1,  PopupMenu概述
+        PopupMenu可以非常方便的在指定view的下面显示一个弹出菜单，类似于actionbar溢出菜单的效果。它的菜单选项可以来自于menu资源，因此非常方便。
+    2,  PopupMenu的使用
+        1,res/menu下面新建 popup_menu.xml,例如:
+        <menu xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools">
+        <item
+             android:id="@+id/special_topic"
+             android:title="专题"/>
+
+        <item
+             android:id="@+id/elite"
+             android:title="精选"/>
+
+        </menu>
+        2,创建PopupMenu
+            构造,PopupMenu(Context context, View anchor)
+        3,加载条目菜单
+            inflate(@MenuRes int menuRes)
+        4,设置菜单条目的监听
+            setOnMenuItemClickListener(OnMenuItemClickListener listener)
+        5,弹出菜单
+            show()
+    3.  PopupMenu其他方法
+        构造:
+        PopupMenu(Context context, View anchor)
+        PopupMenu(Context context, View anchor, int gravity)
+        PopupMenu(Context context, View anchor, int gravity, int popupStyleAttr,int popupStyleRes)
+
+        dismiss()
+        OnTouchListener getDragToOpenListener()
+        int getGravity()
+        Menu getMenu()
+        MenuInflater getMenuInflater()
+        inflate(@MenuRes int menuRes)
+        setGravity(int gravity)
+        setOnDismissListener(OnDismissListener listener)
+        setOnMenuItemClickListener(OnMenuItemClickListener listener)
+        show()
+
